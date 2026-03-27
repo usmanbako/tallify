@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find online stores with genuine tall sizing for men and women. Browse 65+ retailers filtered by inseam, store type, and more.">
+    <meta name="theme-color" content="#111111">
+    <meta property="og:title" content="Tallify - Tall Clothing Directory">
+    <meta property="og:description" content="Find online stores with genuine tall sizing for men and women. Browse 65+ retailers filtered by inseam, store type, and more.">
+    <meta property="og:type" content="website">
+    <title>Tallify - Tall Clothing Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #EFEFEF;
+            --surface:      #FFFFFF;
+            --text:         #111111;
+            --muted:        #666666;
+            --border:       rgba(17,17,17,0.14);
+            --border-dark:  1px solid #111111;
+
+            /* brand accents kept from original palette */
+            --green:  #3f6c51;
+            --blue:   #4a8a96;
+            --pink:   #b85a5e;
+            --purple: #301a4b;
+
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans:  'Inter', -apple-system, sans-serif;
+            --pill:  999px;
+            --card-r: 28px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+        body { overflow-x: hidden; padding-top: 63px; }
+        .wrap { max-width: 1600px; margin: 0 auto; padding: 0 48px; }
+
+        /* ── PILL ──────────────────────────────── */
+        .pill {
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            height: 36px; padding: 0 16px; border-radius: var(--pill);
+            font-family: var(--sans); font-size: 13px; font-weight: 500;
+            border: 1px solid var(--border); background: transparent; color: var(--text);
+            cursor: pointer; transition: all 0.18s; white-space: nowrap; text-decoration: none;
+            user-select: none;
+        }
+        .pill:hover            { border-color: var(--text); }
+        .pill.on               { background: var(--text); color: #fff; border-color: var(--text); }
+        .pill-sm               { height: 30px; padding: 0 12px; font-size: 12px; }
+        .pill-solid            { background: var(--surface); box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+        .pill-solid:hover      { border-color: var(--text); }
+
+        /* ── HEADER ────────────────────────────── */
+        header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 48px; gap: 16px; height: 63px;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            background: var(--bg); border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: var(--serif); font-weight: 700; font-size: 22px;
+            letter-spacing: -0.02em; color: var(--text); text-decoration: none;
+        }
+        .logo em { color: var(--purple); font-style: normal; }
+        .header-nav  { display: flex; gap: 6px; }
+        .header-right{ display: flex; align-items: center; gap: 8px; }
+
+        .search-wrap {
+            display: flex; align-items: center; gap: 8px;
+            height: 36px; padding: 0 14px; border-radius: var(--pill);
+            border: 1px solid var(--border); background: var(--surface);
+            transition: border-color 0.18s;
+        }
+        .search-wrap:focus-within { border-color: var(--text); }
+        .search-wrap svg { opacity: 0.35; flex-shrink: 0; }
+        .search-wrap input {
+            border: none; outline: none; background: transparent;
+            font-family: var(--sans); font-size: 13px; color: var(--text); width: 160px;
+        }
+        .search-wrap input::placeholder { color: var(--muted); }
+
+        /* ── HERO ──────────────────────────────── */
+        .hero {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding: 52px 0 44px; border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+        }
+        .hero-title {
+            font-family: var(--serif); font-weight: 500;
+            font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+            line-height: 1.05; letter-spacing: -0.03em;
+        }
+        .hero-title em { color: var(--purple); font-style: normal; }
+        .hero-meta { font-size: 14px; color: var(--muted); max-width: 260px; line-height: 1.65; padding-bottom: 6px; }
+
+        /* ── WIP ───────────────────────────────── */
+        .wip {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 12px 18px; border: 1px solid var(--border);
+            border-radius: var(--pill); background: var(--surface);
+            font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5;
+        }
+        .wip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); flex-shrink: 0; margin-top: 5px; }
+        .wip a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+
+        /* ── TOOLBAR ───────────────────────────── */
+        .toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 16px; margin-bottom: 14px; flex-wrap: wrap;
+        }
+        .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .toolbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+        .clear-btn {
+            font-size: 12px; color: var(--muted); background: none; border: none;
+            font-family: var(--sans); cursor: pointer; text-decoration: underline;
+            text-underline-offset: 2px; padding: 0 2px; transition: color 0.15s;
+        }
+        .clear-btn:hover { color: var(--text); }
+
+        .inseam-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 36px; flex-wrap: wrap;
+        }
+        .inseam-label { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: 0.02em; }
+
+        /* ── GRID ──────────────────────────────── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 44px 20px;
+            padding-bottom: 80px;
+        }
+
+        /* ── CARD ──────────────────────────────── */
+        .card { display: flex; flex-direction: column; cursor: default; }
+
+        .card-img {
+            width: 100%; aspect-ratio: 3/4;
+            border-radius: var(--card-r); overflow: hidden;
+            position: relative; margin-bottom: 14px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: transform 0.35s ease;
+        }
+        .card:hover .card-img { transform: scale(1.02); }
+
+        .card-initial {
+            font-family: var(--serif); font-weight: 700;
+            font-size: clamp(4rem, 6vw, 7rem);
+            opacity: 0.22; user-select: none; letter-spacing: -0.02em;
+            margin-top: -12px;
+        }
+
+        /* Sizing strip at base of card image */
+        .card-strip {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 28px 18px 16px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.07));
+        }
+        .card-strip-top   { font-size: 11px; font-weight: 500; opacity: 0.65; margin-bottom: 1px; }
+        .card-strip-inseam{ font-size: 13px; font-weight: 600; opacity: 0.85; }
+
+        /* Star badge (tall-specific) */
+        .star-badge {
+            position: absolute; top: 14px; right: 14px;
+            width: 30px; height: 30px; border-radius: 50%;
+            border: 1px solid rgba(17,17,17,0.25);
+            background: rgba(255,255,255,0.75);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; cursor: default;
+        }
+        .star-badge::after {
+            content: 'Tall-specific store';
+            position: absolute; top: calc(100% + 6px); right: 0;
+            background: var(--text); color: #fff;
+            font-family: var(--sans); font-size: 11px; font-weight: 400;
+            padding: 4px 9px; border-radius: 4px; white-space: nowrap;
+            opacity: 0; pointer-events: none; transition: opacity 0.15s;
+        }
+        .star-badge:hover::after { opacity: 1; }
+
+        /* Card info below image */
+        .card-info { padding: 0 4px; display: flex; flex-direction: column; gap: 5px; }
+
+        .badge-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 1px; }
+        .badge {
+            font-size: 9px; font-weight: 600; letter-spacing: 0.7px;
+            text-transform: uppercase; padding: 2px 8px;
+            border-radius: var(--pill); border: 1px solid;
+        }
+        .b-tall    { color: var(--green); border-color: rgba(63,108,81,0.35); background: rgba(63,108,81,0.08); }
+        .b-tops    { color: var(--blue);  border-color: rgba(74,138,150,0.4); background: rgba(74,138,150,0.08); }
+        .b-bottoms { color: var(--pink);  border-color: rgba(184,90,94,0.35); background: rgba(184,90,94,0.08); }
+
+        .name-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+        .store-name { font-size: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .inseam-val { font-size: 14px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+        .inseam-val.hi { color: var(--green); }
+
+        .sizes-line { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .card-notes {
+            font-size: 11.5px; color: var(--muted); font-style: italic; line-height: 1.55;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            cursor: pointer; margin-top: 1px; transition: color 0.15s;
+        }
+        .card-notes:hover { color: #444; }
+        .card-notes.expanded { display: block; }
+
+        .visit-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 12px; font-weight: 500; color: var(--muted);
+            text-decoration: none; margin-top: 5px; transition: color 0.15s, gap 0.15s;
+        }
+        .visit-link:hover { color: var(--text); gap: 8px; }
+
+        /* ── LOGO ──────────────────────────────── */
+        a.card { text-decoration: none; color: inherit; cursor: pointer; }
+        .logo-badge {
+            width: 88px; height: 88px; border-radius: 22px;
+            background: #fff; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.13);
+            position: relative; z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        a.card:hover .logo-badge  { transform: scale(1.06); }
+        a.card:hover .card-img    { transform: scale(1.02); }
+        .logo-badge img {
+            width: 56px; height: 56px; object-fit: contain; border-radius: 6px;
+        }
+        .card-initial-wrap {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%; position: absolute; inset: 0;
+        }
+
+        .no-results { padding: 80px 0; text-align: center; color: var(--muted); font-size: 15px; }
+
+        /* ── FEATURED FULL-SCREEN ──────────────── */
+        #featuredSection {
+            /* break out of .wrap padding to go full viewport width */
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+        }
+        .feat-fullscreen {
+            width: 100%; min-height: calc(100vh - 61px);
+            background-size: cover; background-position: center top;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            position: relative;
+        }
+        .feat-fullscreen.no-img { background: var(--surface); border-bottom: 1px solid var(--border); }
+        .feat-fs-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 35%, rgba(0,0,0,0.74) 100%);
+        }
+        .feat-fs-content {
+            position: relative; z-index: 1;
+            max-width: 1600px; margin: 0 auto; width: 100%;
+            padding: 0 48px 72px;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .feat-fs-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+            color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3);
+            padding: 5px 14px; border-radius: var(--pill); width: fit-content;
+        }
+        .no-img .feat-fs-pill { color: var(--purple); background: rgba(48,26,75,0.07); border-color: rgba(48,26,75,0.15); backdrop-filter: none; }
+        .feat-fs-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+        .no-img .feat-fs-eyebrow { color: var(--muted); }
+        .feat-fs-name {
+            font-family: var(--serif); font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 500; letter-spacing: -0.04em; line-height: 1; color: #fff;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.2);
+        }
+        .no-img .feat-fs-name { color: var(--text); text-shadow: none; }
+        .feat-fs-blurb { font-size: 16px; color: rgba(255,255,255,0.82); max-width: 560px; line-height: 1.6; }
+        .no-img .feat-fs-blurb { color: var(--muted); }
+        .feat-fs-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .feat-fs-tag {
+            font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: var(--pill);
+            border: 1px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(4px);
+        }
+        .no-img .feat-fs-tag { border-color: var(--border); color: var(--muted); background: transparent; backdrop-filter: none; }
+        .feat-fs-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #fff; color: var(--text); font-size: 14px; font-weight: 600;
+            padding: 14px 28px; border-radius: var(--pill);
+            text-decoration: none; width: fit-content;
+            transition: gap 0.15s, opacity 0.15s; margin-top: 4px;
+        }
+        .feat-fs-cta:hover { opacity: 0.92; gap: 12px; }
+        .no-img .feat-fs-cta { background: var(--text); color: #fff; }
+
+        /* Category grid */
+        .feat-cat-section {
+            max-width: 1600px; margin: 0 auto; padding: 56px 48px 80px;
+        }
+        .feat-cat-heading {
+            font-family: var(--serif); font-size: 32px; font-weight: 500;
+            letter-spacing: -0.025em; margin-bottom: 8px;
+        }
+        .feat-cat-sub {
+            font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.5;
+        }
+        .feat-cat-grid {
+            display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;
+        }
+        .feat-cat-tile {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 32px 28px;
+            cursor: pointer; text-decoration: none; color: inherit;
+            display: flex; flex-direction: column; gap: 20px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .feat-cat-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); border-color: rgba(17,17,17,0.22); }
+        .feat-cat-icon {
+            width: 48px; height: 48px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .feat-cat-icon svg { width: 22px; height: 22px; }
+        .feat-cat-name { font-family: var(--serif); font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+        .feat-cat-count { font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+        /* More picks wrapper */
+        .feat-picks-wrap { max-width: 1600px; margin: 0 auto; padding: 48px 48px 80px; }
+        .feat-more-label {
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.2px; color: var(--muted); margin-bottom: 16px;
+        }
+
+        /* Smaller picks grid */
+        .featured-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            padding-bottom: 80px;
+        }
+        a.feat-card {
+            display: flex; border: 1px solid var(--border); border-radius: 20px;
+            overflow: hidden; text-decoration: none; color: inherit;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+            background: var(--surface);
+        }
+        a.feat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); border-color: rgba(17,17,17,0.25); }
+        .feat-logo {
+            width: 150px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            padding: 28px 20px; position: relative;
+        }
+        .feat-logo.has-image::after {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(0,0,0,0.15);
+        }
+        .feat-logo .card-initial { font-size: 3.5rem; opacity: 0.2; }
+        .feat-body {
+            flex: 1; padding: 24px 24px 24px 0;
+            display: flex; flex-direction: column; gap: 8px; justify-content: center;
+        }
+        .feat-eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+        .feat-name { font-family: var(--serif); font-size: 22px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
+        .feat-blurb { font-size: 13px; color: var(--muted); line-height: 1.6; }
+        .feat-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .feat-tag {
+            font-size: 11px; font-weight: 500; padding: 3px 10px;
+            border-radius: var(--pill); border: 1px solid var(--border); color: var(--muted);
+        }
+        .feat-cta {
+            font-size: 12px; font-weight: 500; color: var(--text);
+            margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;
+            transition: gap 0.15s;
+        }
+        a.feat-card:hover .feat-cta { gap: 8px; }
+
+        /* ── MODAL ─────────────────────────────── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(17,17,17,0.45);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 500; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--bg); width: 100%; max-width: 520px;
+            max-height: 90vh; overflow-y: auto;
+            margin: 20px; padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            transform: translateY(12px); transition: transform 0.2s;
+        }
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .modal-title { font-family: var(--serif); font-size: 28px; font-weight: 500; letter-spacing: -0.02em; }
+        .modal-close {
+            background: none; border: 1px solid var(--border); width: 32px; height: 32px;
+            border-radius: 50%; cursor: pointer; font-size: 18px; color: var(--muted);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .modal-close:hover { border-color: var(--text); color: var(--text); }
+        .modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+        .form-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+            border-radius: var(--pill); background: var(--surface);
+            font-family: var(--sans); font-size: 13px; color: var(--text); outline: none;
+            transition: border-color 0.18s; -webkit-appearance: none;
+        }
+        .form-textarea { border-radius: 14px; resize: vertical; min-height: 80px; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--text); }
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-check { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; cursor: pointer; }
+        .form-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--purple); cursor: pointer; }
+        .form-check span { font-size: 13px; }
+        .form-submit {
+            width: 100%; height: 44px; border-radius: var(--pill);
+            background: var(--text); color: #fff; border: none;
+            font-family: var(--sans); font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: opacity 0.15s; margin-top: 8px;
+        }
+        .form-submit:hover { opacity: 0.85; }
+        .form-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; line-height: 1.5; }
+        .form-note a { color: var(--text); }
+        .form-success {
+            text-align: center; padding: 24px 0;
+            font-family: var(--serif); font-size: 22px; font-weight: 500;
+            display: none;
+        }
+        .form-success p { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 400; }
+
+        /* ── RESPONSIVE ────────────────────────── */
+        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3,1fr); } }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: repeat(2,1fr); }
+            .featured-grid { grid-template-columns: 1fr; }
+            .feat-hero { flex-direction: column; min-height: unset; }
+            .feat-hero-img { width: 100%; min-height: 220px; }
+            .feat-hero-body { padding: 32px; }
+            .hero { flex-direction: column; align-items: flex-start; gap: 14px; }
+            .hero-meta { max-width: 100%; }
+            .wrap { padding: 0 20px; }
+            header { padding: 0 20px; }
+            .search-wrap input { width: 110px; }
+            .feat-fs-content { padding: 0 24px 48px; }
+            .feat-cat-section { padding: 40px 20px 60px; }
+            .feat-cat-grid { grid-template-columns: repeat(2,1fr); }
+            .modal { padding: 28px; margin: 12px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            /* Header: wrap to two rows */
+            header {
+                flex-wrap: wrap; height: auto;
+                padding: 12px 16px; gap: 8px;
+            }
+            .header-nav { order: 3; width: 100%; justify-content: center; gap: 4px; }
+            .header-nav .pill { font-size: 12px; padding: 6px 14px; }
+            .header-right { margin-left: auto; gap: 6px; }
+            .header-right .pill { font-size: 11px; padding: 5px 10px; }
+            .search-wrap { height: 32px; padding: 0 10px; }
+            .search-wrap input { width: 80px; font-size: 12px; }
+            body { padding-top: 96px; }
+            .feat-fullscreen { min-height: calc(100vh - 96px); }
+
+            /* Collapse button labels & hide count pill */
+            .btn-label { display: none; }
+            #countPill { display: none !important; }
+
+            /* Hero & content */
+            .hero-title { font-size: 2.6rem; }
+            .feat-fs-name { font-size: 2.2rem; }
+            .feat-fs-blurb { font-size: 13px; }
+            .feat-cat-grid { grid-template-columns: 1fr 1fr; }
+
+            /* Toolbar */
+            .toolbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .toolbar-right { width: 100%; justify-content: flex-end; }
+        }
+
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; gap: 20px; }
+            .feat-cat-grid { grid-template-columns: 1fr; }
+            header { padding: 10px 14px; }
+            .logo { font-size: 19px; }
+            .hero-title { font-size: 2.2rem; }
+            .feat-fs-name { font-size: 1.9rem; }
+            .feat-fs-content { padding: 0 16px 36px; }
+            .feat-cat-section { padding: 32px 0 48px; }
+            .feat-cat-tile { padding: 24px 20px; }
+            .inseam-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a class="logo" href="#">Tall<em>ify</em></a>
+    <nav class="header-nav" role="tablist" aria-label="Directory sections">
+        <button class="pill on"  id="tab-featured" role="tab" aria-selected="true"  onclick="switchTab('featured')">★ Featured</button>
+        <button class="pill"     id="tab-men"      role="tab" aria-selected="false" onclick="switchTab('men')">Men's</button>
+        <button class="pill"     id="tab-women"    role="tab" aria-selected="false" onclick="switchTab('women')">Women's</button>
+    </nav>
+    <div class="header-right">
+        <div class="search-wrap" id="searchWrap" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <label for="searchInput" class="sr-only">Search stores</label>
+            <input type="text" id="searchInput" placeholder="Search stores…">
+        </div>
+        <div class="pill pill-solid pill-sm" id="countPill" style="display:none">45 stores</div>
+        <button class="pill pill-solid pill-sm" onclick="openModal()">+<span class="btn-label"> Submit a Store</span></button>
+        <button class="pill pill-sm" onclick="openFeedback()">💬<span class="btn-label"> Feedback</span></button>
+    </div>
+</header>
+
+<div class="wrap">
+
+    <!-- FEATURED SECTION (full-viewport, outside main) -->
+    <div id="featuredSection">
+        <div id="featuredGrid"></div>
+    </div>
+
+    <main id="mainContent" style="display:none">
+        <div class="hero">
+            <h1 class="hero-title" id="heroTitle">Men's Tall<br><em>Directory</em></h1>
+            <p class="hero-meta" id="heroMeta">A curated list of online stores with genuine tall sizing for men 6'2" and above, filterable by inseam, store type, and more.</p>
+        </div>
+
+        <div class="wip" id="wipBanner" style="display:none">
+            <div class="wip-dot"></div>
+            <span>Women's coverage is still being expanded and some data may be incomplete. Know a store we've missed? Reach out to <a href="https://www.reddit.com/u/wildthingking" target="_blank" rel="noopener">u/wildthingking</a> on Reddit.</span>
+        </div>
+
+        <!-- DIRECTORY CONTROLS -->
+        <div id="directoryControls">
+        <div class="toolbar">
+            <div class="filter-pills">
+                <button class="pill on"  id="f-all"          onclick="toggleFilter('all')">All Stores</button>
+                <button class="pill"     id="f-tallSpecific"  onclick="toggleFilter('tallSpecific')">Tall-Specific ★</button>
+                <button class="pill"     id="f-hasTops"       onclick="toggleFilter('hasTops')">Tops</button>
+                <button class="pill"     id="f-hasBottoms"    onclick="toggleFilter('hasBottoms')">Bottoms</button>
+            </div>
+            <div class="toolbar-right">
+                <button class="clear-btn" id="clearBtn" style="display:none" onclick="clearFilters()">Clear all</button>
+                <span class="pill pill-solid" style="cursor:default;pointer-events:none">A–Z</span>
+            </div>
+        </div>
+
+        <div class="inseam-row" id="inseamRow">
+            <span class="inseam-label">Min. inseam</span>
+            <button class="pill pill-sm on" data-ins="0"  onclick="setInseam(0)">Any</button>
+            <button class="pill pill-sm"    data-ins="34" onclick="setInseam(34)">34"+</button>
+            <button class="pill pill-sm"    data-ins="36" onclick="setInseam(36)">36"+</button>
+            <button class="pill pill-sm"    data-ins="38" onclick="setInseam(38)">38"+</button>
+            <button class="pill pill-sm"    data-ins="40" onclick="setInseam(40)">40"+</button>
+            <button class="pill pill-sm"    data-ins="42" onclick="setInseam(42)">42"+</button>
+        </div>
+
+        <div class="grid"      id="storeGrid"></div>
+        <div class="no-results" id="noResults" style="display:none">No stores match the selected filters.</div>
+        </div><!-- /directoryControls -->
+    </main>
+</div><!-- /wrap -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Submit a Store</h2>
+            <button class="modal-close" aria-label="Close" onclick="closeModal()">×</button>
+        </div>
+        <p class="modal-sub">Know a store with genuine tall sizing that isn't listed? Tell us about it and we'll review it for inclusion.</p>
+
+        <div id="formSuccess" class="form-success">
+            Submitted
+            <p>We'll review it and add it to the directory if it qualifies. Thank you.</p>
+        </div>
+
+        <!-- Replace YOUR_FORM_ID with your Formspree form ID (free at formspree.io) -->
+        <form id="submitForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Store Name *</label>
+                    <input class="form-input" name="store_name" placeholder="e.g. Gap" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Website URL *</label>
+                    <input class="form-input" name="url" type="url" placeholder="https://..." required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Section</label>
+                    <select class="form-select" name="section">
+                        <option value="men">Men's</option>
+                        <option value="women">Women's</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Max Inseam / Bottom Sizes</label>
+                    <input class="form-input" name="inseam" placeholder='e.g. 38" or sizes 0–20'>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tall Top Sizes</label>
+                <input class="form-input" name="top_sizes" placeholder="e.g. Tall S–3XL">
+            </div>
+            <label class="form-check">
+                <input type="checkbox" name="tall_specific" value="yes">
+                <span>This store is tall-specific (entire store designed for tall people)</span>
+            </label>
+            <div class="form-group">
+                <label class="form-label">Notes</label>
+                <textarea class="form-textarea" name="notes" placeholder="Anything else worth knowing: quality, selection gaps, international shipping, etc."></textarea>
+            </div>
+            <button type="submit" class="form-submit">Submit Store →</button>
+            <p class="form-note">
+                All submissions are reviewed before being added to the directory. No account required.
+            </p>
+        </form>
+    </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="modal-overlay" id="feedbackOverlay" onclick="if(event.target===this)closeFeedback()">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Site Feedback</h2>
+            <button class="modal-close" aria-label="Close" onclick="closeFeedback()">×</button>
+        </div>
+        <p class="modal-sub">Found an error, missing a store, or have an idea to improve Tallify? We'd love to hear it.</p>
+
+        <div id="feedbackSuccess" class="form-success">
+            Received
+            <p>Thanks for helping make Tallify better.</p>
+        </div>
+
+        <form id="feedbackForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="hidden" name="_subject" value="Tallify Feedback">
+            <div class="form-group">
+                <label class="form-label">What kind of feedback?</label>
+                <select class="form-select" name="type">
+                    <option value="suggestion">Suggestion</option>
+                    <option value="missing_store">Missing store</option>
+                    <option value="wrong_info">Wrong info</option>
+                    <option value="bug">Bug or broken link</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Your feedback *</label>
+                <textarea class="form-textarea" name="feedback" placeholder="Tell us what's on your mind..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email (optional, if you'd like a reply)</label>
+                <input class="form-input" name="email" type="email" placeholder="you@example.com">
+            </div>
+            <button type="submit" class="form-submit">Send Feedback →</button>
+        </form>
+    </div>
+</div>
+
+</div>
+<script>
+// ── CARD COLOUR MAP ──────────────────────────────────────────────────────────
+const PALETTE = [
+    '#E8EDF3','#EDF3E9','#F3EDE8','#EDE8F3',
+    '#F3E9ED','#E9F3EF','#F3F1E8','#EBE8F3'
+];
+function cardBg(name) {
+    let h = 0;
+    for (const c of name) h = (h * 31 + c.charCodeAt(0)) & 0xFFFF;
+    return PALETTE[h % PALETTE.length];
+}
+
+// ── MEN'S DATA ───────────────────────────────────────────────────────────────
+const menStores = [
+    { name:"2Tall",               domain:"2tall.com",             tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall, Xtra Tall - M–3XL",        inseam:40, inseamD:'40"', waist:'28"–40"',  notes:null, url:"https://www.2tall.com" },
+    { name:"Abercrombie & Fitch", domain:"abercrombie.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:34, inseamD:'34"', waist:'28"–40"',  notes:null, url:"https://www.abercrombie.com/shop/us" },
+    { name:"Adidas",              domain:"adidas.com",            tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - XS–5XL",                  inseam:null,inseamD:"Not listed",waist:"Tall L–5XL / Tall² L–2XL", notes:"Limited tall selection as of Sept 2024", url:"https://www.adidas.com" },
+    { name:"American Eagle",      domain:"ae.com",                tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–XL",                    inseam:36, inseamD:'36"', waist:'32"–38" (Tall S–XL)', notes:null, url:"https://www.ae.com" },
+    { name:"American Tall",       domain:"americantall.com",      tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Semi-Tall, Tall, Xtra Tall - S–3XL", inseam:40, inseamD:'40"', waist:'28"–40"', notes:"Quality can be hit or miss", url:"https://www.americantall.com" },
+    { name:"Asket",               domain:"asket.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Long - S–XXL",                   inseam:null,inseamD:"Not specified",waist:'Long - Waist 28"–38"', notes:null, url:"https://www.asket.com" },
+    { name:"Banana Republic",     domain:"bananarepublic.gap.com",tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:null,inseamD:"Not specified",waist:"Tall - M–XXL", notes:null, url:"https://bananarepublic.gap.com" },
+    { name:"Baseballism",         domain:"baseballism.com",       tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"No official Tall - longer-cut tees", inseam:null,inseamD:"N/A (shorts only)",waist:null, notes:"Shirts run ~4\" longer than standard; not official tall sizing", url:"https://www.baseballism.com" },
+    { name:"Bobby Love",          domain:"bobbylove.com",         tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"S–3XL",                          inseam:38, inseamD:'38"', waist:'30"–40" (S–4XL)', notes:null, url:"https://www.bobbylove.com" },
+    { name:"Bonobos",             domain:"bonobos.com",           tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Long - XS–2XL",                  inseam:36, inseamD:'36"', waist:'30"–40" (Long M–XXL)', notes:null, url:"https://www.bonobos.com" },
+    { name:"Carhartt",            domain:"carhartt.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–5XL",                   inseam:null,inseamD:"Not specified",waist:"Tall - S–4XL", notes:null, url:"https://www.carhartt.com" },
+    { name:"Cutter & Buck",       domain:"cutterbuck.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL, Big - L–4XL",      inseam:36, inseamD:'36" (Tall)',waist:'36–46 (Tall) / 42–48 (Big)', notes:null, url:"https://www.cutterbuck.com" },
+    { name:"Doubs Clothing",      domain:"doubsclothing.com",     tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"M–3XL",                          inseam:40, inseamD:'40"', waist:'30"–42"', notes:null, url:"https://www.doubsclothing.com" },
+    { name:"Dri Duck",            domain:"dri-duck.com",          tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - M–2XL",                   inseam:null,inseamD:"N/A", waist:null, notes:"Tops and accessories only - not all items carry all sizes", url:"https://www.dri-duck.com" },
+    { name:"Duluth Trading Co.",  domain:"duluthtrading.com",     tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–3XL",                   inseam:36, inseamD:'36"', waist:'32"–40" (Tall M–3XL)', notes:null, url:"https://www.duluthtrading.com" },
+    { name:"Eddie Bauer",         domain:"eddiebauer.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–3XL",                   inseam:36, inseamD:'36"', waist:'34"–38" (Tall S–3XL)', notes:null, url:"https://www.eddiebauer.com" },
+    { name:"Express",             domain:"express.com",           tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:36, inseamD:'36"', waist:'32"–38"', notes:'Other waist sizes available with 34" inseam pants', url:"https://www.express.com" },
+    { name:"Filson",              domain:"filson.com",            tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Long - M–XL",                    inseam:34, inseamD:'34"', waist:'28"–33"', notes:"Limited tall top selection", url:"https://www.filson.com" },
+    { name:"Fresh Clean Threads", domain:"freshcleanwear.com",    tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - S–4XL",                   inseam:32, inseamD:'32" :(', waist:null, notes:"Only tops available in tall sizes", url:"https://www.freshcleanwear.com" },
+    { name:"Gap",                 domain:"gap.com",               tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–3XL",                   inseam:38, inseamD:'38"', waist:'28"–42"', notes:null, url:"https://www.gap.com" },
+    { name:"Girav",               domain:"girav.com",             tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall S–2XL / Tall Long S–3XL / Tall Extra Long M–3XL", inseam:null,inseamD:"Long / X-Long / XX-Long",waist:"Long S–2XL / Extra Long M–2XL / XX-Long M–2XL", notes:"European-based tall-specific store", url:"https://www.girav.com" },
+    { name:"HaveItTall",          domain:"haveittall.com",        tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–3XL",                   inseam:42, inseamD:'42"', waist:'32"–40"', notes:null, url:"https://www.haveittall.com" },
+    { name:"Hollister",           domain:"hollisterco.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - XS–2XL",                  inseam:36, inseamD:'36"', waist:'30"–38" (Tall XS–XXL)', notes:null, url:"https://www.hollisterco.com" },
+    { name:"Huckberry",           domain:"huckberry.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"None found",                     inseam:36, inseamD:'36"', waist:'33"–40"', notes:"No tall tops found - bottoms only", url:"https://www.huckberry.com" },
+    { name:"J. Crew",             domain:"jcrew.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:36, inseamD:'36"', waist:'34" (limited waist options)', notes:"Good formal wear selection; limited waist sizes at 36\" inseam", url:"https://www.jcrew.com" },
+    { name:"JCPenney",            domain:"jcpenney.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Big & Tall - XL–4XL",            inseam:38, inseamD:'38"', waist:'32"–42"', notes:null, url:"https://www.jcpenney.com" },
+    { name:"Johnnie-O",           domain:"johnnie-o.com",         tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL, Big - L–4XL",      inseam:34, inseamD:'34"', waist:'30"–40"', notes:null, url:"https://www.johnnie-o.com" },
+    { name:"JohnnyBig",           domain:"johnnybig.com",         tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL",                   inseam:36, inseamD:'36"', waist:"36–48", notes:"Primarily for Big AND Tall - fewer options for slimmer builds", url:"https://www.johnnybig.com" },
+    { name:"Kingsize",            domain:"kingsizedirect.com",    tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–2XL",                   inseam:36, inseamD:'36"', waist:'34"+ (up to 50"+)', notes:"More options for big & tall; fewer for tall & lean", url:"https://www.kingsizedirect.com" },
+    { name:"Kohl's",              domain:"kohls.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Varies",                         inseam:null,inseamD:"Varies", waist:"Varies", notes:"Big & Tall selection varies by store", url:"https://www.kohls.com" },
+    { name:"Lands' End",          domain:"landsend.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL, B&T - 2XL–4XL",   inseam:null,inseamD:'Long - 34"–42"', waist:'B&T 44"–54"', notes:null, url:"https://www.landsend.com" },
+    { name:"Levi's",              domain:"levi.com",              tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL",                   inseam:40, inseamD:'40"', waist:'32"–66" (limited waist at 36"–40")', notes:"Limited waist options at longer inseams", url:"https://www.levi.com" },
+    { name:"L.L.Bean",            domain:"llbean.com",            tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–3XL",                   inseam:36, inseamD:'36"', waist:'30"–44"', notes:null, url:"https://www.llbean.com" },
+    { name:"Lululemon",           domain:"lululemon.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"None found",                     inseam:37, inseamD:'37"', waist:'28"–46" (XS–2XL)', notes:"Couldn't find tall sizes for tops", url:"https://www.lululemon.com" },
+    { name:"Marine Layer",        domain:"marinelayer.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"M/L or L/XL (longer cut)",       inseam:null,inseamD:"Not specified",waist:"Tall - M–2XL", notes:"Shirts cut one length size up; small selection of tall pants", url:"https://www.marinelayer.com" },
+    { name:"MediumTall",          domain:"mediumtall.com",        tallSpecific:true,  hasTops:true,  hasBottoms:false, topSizes:"Unknown",                        inseam:null,inseamD:"Unknown", waist:null, notes:"Site couldn't be loaded from USA at time of review", url:"https://www.mediumtall.com" },
+    { name:"Navas",               domain:"navaslab.com",          tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL, Extra Tall - M–2XL", inseam:36, inseamD:'36"', waist:'32"–38"', notes:null, url:"https://www.navaslab.com" },
+    { name:"Nike",                domain:"nike.com",              tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–4XL",                   inseam:null,inseamD:"Not listed",waist:"Tall - S–4XL", notes:"Longer pants may exist per waist size; no inseam listed", url:"https://www.nike.com" },
+    { name:"Old Navy",            domain:"oldnavy.com",           tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–4XL",                   inseam:38, inseamD:'38"', waist:'26"–54" (M–4XL)', notes:null, url:"https://www.oldnavy.com" },
+    { name:"Perry Ellis",         domain:"perryellis.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Big & Tall - L–3XL + 4XLB",      inseam:36, inseamD:'36"', waist:'34"–42"', notes:"Waist options vary by pant; suits available in B&T section", url:"https://www.perryellis.com" },
+    { name:"Puma",                domain:"puma.com",              tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–3XL",                   inseam:null,inseamD:"Not specified",waist:"Waist sizes only", notes:"Limited overall selection", url:"https://www.puma.com" },
+    { name:"Ralph Lauren",        domain:"ralphlauren.com",       tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - M–4XL",                   inseam:null,inseamD:'Shorts only',waist:'36"–44" (shorts)', notes:"Bottoms are shorts only; Big sizes also available", url:"https://www.ralphlauren.com" },
+    { name:"REI",                 domain:"rei.com",               tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–5XL",                   inseam:36, inseamD:'36"', waist:'28"–50" (Tall S–3XL)', notes:null, url:"https://www.rei.com" },
+    { name:"Tommy Bahama",        domain:"tommybahama.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Big & Tall - M–2XL + 2XLB",      inseam:null,inseamD:"Not specified",waist:'Tall - 36"–46"', notes:"More options available for big builds as well", url:"https://www.tommybahama.com" },
+    { name:"True Classic",        domain:"trueclassictees.com",   tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–4XL",                   inseam:34, inseamD:'34"', waist:'30"–42"', notes:null, url:"https://www.trueclassictees.com" }
+];
+
+// ── WOMEN'S DATA ─────────────────────────────────────────────────────────────
+const womenStores = [
+    { name:"Abercrombie & Fitch", domain:"abercrombie.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",              bottomSizes:'Long/Extra Long - Waist 23"–37"',  notes:"Tall 'tops' are mostly dresses", url:"https://www.abercrombie.com" },
+    { name:"Alloy",               domain:"alloyapparel.com",       tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"XS–2XL",                    bottomSizes:"2–20",                             notes:null, url:"https://www.alloyapparel.com" },
+    { name:"Amalli Talli",        domain:"amalliandtalli.com",     tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"S–2XL",                     bottomSizes:'Sizes 27–36 (brand-specific), 38" inseam', notes:null, url:"https://www.amalliandtalli.com" },
+    { name:"American Eagle",      domain:"ae.com",                 tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"No Tall sizes listed",      bottomSizes:"Long 000–20, S–XL / X-Long 0–14", notes:null, url:"https://www.ae.com" },
+    { name:"American Tall",       domain:"americantall.com",       tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"XS–2XL (sizes 2–20)",       bottomSizes:"XS–2XL (sizes 2–36)",              notes:"Quality can be hit or miss", url:"https://www.americantall.com" },
+    { name:"Ann Taylor",          domain:"anntaylor.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XS–XXL",                    bottomSizes:"0–18",                             notes:null, url:"https://www.anntaylor.com" },
+    { name:"Anthropologie",       domain:"anthropologie.com",      tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - XS–XL",              bottomSizes:"Tall sizes not specified",          notes:null, url:"https://www.anthropologie.com" },
+    { name:"ASOS",                domain:"asos.com",               tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XS–XL",                     bottomSizes:"0–16",                             notes:null, url:"https://www.asos.com" },
+    { name:"Athleta",             domain:"athleta.gap.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"S–XL",                      bottomSizes:"0–18",                             notes:"Dresses also available", url:"https://athleta.gap.com" },
+    { name:"Banana Republic",     domain:"bananarepublic.gap.com", tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"2–18",                      bottomSizes:"2–20",                             notes:"'Tall' section shows all clothes meeting the Tall criteria", url:"https://bananarepublic.gap.com" },
+    { name:"Dri Duck",            domain:"dri-duck.com",           tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - XL–2XL",             bottomSizes:"None",                             notes:"Tees/fleeces don't have tall sizes", url:"https://www.dri-duck.com" },
+    { name:"Gap",                 domain:"gap.com",                tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"4–20",                      bottomSizes:"00–20, LONG",                      notes:"Tall options for dresses, one pieces, outerwear, and blazers", url:"https://www.gap.com" },
+    { name:"Hollister",           domain:"hollisterco.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tends to run long",         bottomSizes:"Tends to run long",                notes:"No specific Tall sizing - clothes run longer overall", url:"https://www.hollisterco.com" },
+    { name:"Levi's",              domain:"levi.com",               tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"No Tall sizes listed",      bottomSizes:'38" inseam - Waist 23"–34"',       notes:"Only one jeans option (501)", url:"https://www.levi.com" },
+    { name:"L.L.Bean",            domain:"llbean.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XXS–3XL",                   bottomSizes:"2–20",                             notes:null, url:"https://www.llbean.com" },
+    { name:"Loft",                domain:"loft.com",               tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"0–18",                      bottomSizes:"0–18",                             notes:"Good dresses/skirts selection; tops are mostly blazers", url:"https://www.loft.com" },
+    { name:"Long Tall Sally",     domain:"longtallsally.com",      tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"4–20, One Size",            bottomSizes:"4–28",                             notes:null, url:"https://www.longtallsally.com/us" },
+    { name:"Marcella NYC",        domain:"marcellanyc.com",        tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"XXS–3XL",                   bottomSizes:"XXS–3XL",                          notes:null, url:"https://www.marcellanyc.com" },
+    { name:"Marine Layer",        domain:"marinelayer.com",        tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:'"Marge" or "Larger"',       bottomSizes:"N/A",                              notes:"Tees/tanks only. Marge = M with L length; Larger = L with XL length", url:"https://www.marinelayer.com" },
+    { name:"New York & Company",  domain:"nyandcompany.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"2–18",                      bottomSizes:"XS–2XL, 0–20",                     notes:"Tops are mostly blazers", url:"https://www.nyandcompany.com" },
+    { name:"Old Navy",            domain:"oldnavy.com",            tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XS–XXL",                    bottomSizes:"00–20",                            notes:"Tall options for dresses, outerwear, and swimwear", url:"https://www.oldnavy.com" },
+    { name:"Pretty Little Thing", domain:"prettylittlething.com",  tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - 00–14",              bottomSizes:"Tall - 00–14",                     notes:null, url:"https://www.prettylittlething.com" },
+    { name:"REI",                 domain:"rei.com",                tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"M–3XL",                     bottomSizes:"XL–3XL, 0–20 W",                   notes:"Very limited options for tops", url:"https://www.rei.com" },
+    { name:"TA3",                 domain:"ta3swim.com",            tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Long/Extra Long - XXS–4XL", bottomSizes:"N/A",                              notes:"Mostly swimsuits", url:"https://www.ta3swim.com" }
+];
+
+// ── FEATURED DATA ────────────────────────────────────────────────────────────
+const featuredStores = [
+    {
+        section: "Men's & Women's Pick",
+        name: "American Tall", domain: "americantall.com",
+        heroImage: "https://americantall.com/cdn/shop/files/ponte_hp_banner_desktop.jpg?v=1770914294&width=1600",
+        url: "https://www.americantall.com",
+        blurb: "One of the broadest dedicated tall ranges available. Semi-Tall, Tall, and Xtra Tall tiers for both men and women. Men get 40\" inseams and waists from 28\"–40\"; women get proportional fits from 5'9\" to 6'6\". The go-to starting point.",
+        tags: ['Tall-specific', 'Men & Women', '40" inseam', 'S–3XL'],
+        tallSpecific: true
+    },
+    {
+        section: "Men's Pick",
+        name: "HaveItTall", domain: "haveittall.com",
+        url: "https://www.haveittall.com",
+        blurb: "The go-to for serious inseam. With 42\" options and waist sizes from 32\"–40\", this tall-specific store consistently delivers for guys who've given up finding long enough pants anywhere else.",
+        tags: ['Tall-specific', 'Tops S–3XL', '42" inseam', 'Waist 32"–40"'],
+        tallSpecific: true
+    },
+    {
+        section: "Women's Pick",
+        name: "Long Tall Sally", domain: "longtallsally.com",
+        heroImage: null, // paste CDN/OG image URL here
+        url: "https://www.longtallsally.com",
+        blurb: "The original dedicated tall women's retailer. Decades of experience shows: pants up to size 28, tops to size 20, and a selection that genuinely understands the tall body rather than just hemming standard cuts.",
+        tags: ['Tall-specific', 'Tops 4–20', 'Bottoms 4–28'],
+        tallSpecific: true
+    },
+    {
+        section: "Women's Pick",
+        name: "Old Navy", domain: "oldnavy.com",
+        heroImage: null, // paste CDN/OG image URL here
+        url: "https://www.oldnavy.com/browse/category.do?cid=55876",
+        blurb: "The most accessible option for tall women on a budget. Tall sizes run XS–XXL in tops and 00–20 in bottoms, with tall options extending to dresses, outerwear, and swimwear. Rare to find that much range in one place.",
+        tags: ['XS–XXL tops', '00–20 bottoms', 'Dresses', 'Swimwear'],
+        tallSpecific: false
+    }
+];
+
+// Pre-sort store arrays (A-Z, done once)
+const _cmp = (a,b) => a.name.localeCompare(b.name);
+menStores.sort(_cmp);
+womenStores.sort(_cmp);
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let tab       = 'featured';
+let minInseam = 0;
+const AF = { tallSpecific:false, hasTops:false, hasBottoms:false };
+
+// ── SWITCH TAB ───────────────────────────────────────────────────────────────
+function switchTab(t) {
+    tab = t;
+    ['featured','men','women'].forEach(id => {
+        const el = document.getElementById('tab-' + id);
+        el.classList.toggle('on', t === id);
+        el.setAttribute('aria-selected', t === id);
+    });
+
+    const isFeatured = t === 'featured';
+    document.getElementById('featuredSection').style.display = isFeatured ? '' : 'none';
+    document.getElementById('mainContent').style.display     = isFeatured ? 'none' : '';
+    document.getElementById('searchWrap').style.display      = isFeatured ? 'none' : '';
+    document.getElementById('countPill').style.display       = isFeatured ? 'none' : '';
+
+    if (isFeatured) { renderFeatured(); return; }
+
+    document.getElementById('wipBanner').style.display = t==='women' ? '' : 'none';
+    document.getElementById('inseamRow').style.display = t==='men'   ? '' : 'none';
+    document.getElementById('heroTitle').innerHTML = t==='men'
+        ? "Men's Tall<br><em>Directory</em>" : "Women's Tall<br><em>Directory</em>";
+    document.getElementById('heroMeta').textContent = t==='men'
+        ? "A curated list of online stores with genuine tall sizing for men 6'2\" and above, filterable by inseam, store type, and more."
+        : "A curated list of online stores with tall sizing for women 5'9\" and above. More stores being added - see something missing? Let us know.";
+    clearFilters(true);
+    render();
+}
+
+// ── FEATURED RENDER ───────────────────────────────────────────────────────────
+function renderFeatured() {
+    const hero  = featuredStores[0];
+    const picks = featuredStores.slice(1);
+
+    // Full-screen hero
+    const hasImg   = !!hero.heroImage;
+    const bgStyle  = hasImg ? `background-image:url('${hero.heroImage}');background-size:cover;background-position:center top;` : '';
+    const heroHtml = `
+    <a href="${hero.url}" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+        <div class="feat-fullscreen${hasImg ? '' : ' no-img'}" style="${bgStyle}">
+            ${hasImg ? '<div class="feat-fs-overlay"></div>' : ''}
+            <div class="feat-fs-content">
+                <span class="feat-fs-pill">★ Store of the Month</span>
+                <div class="feat-fs-eyebrow">${hero.section}</div>
+                <div class="feat-fs-name">${hero.name}</div>
+                <p class="feat-fs-blurb">${hero.blurb}</p>
+                <div class="feat-fs-tags">${hero.tags.map(t => `<span class="feat-fs-tag">${t}</span>`).join('')}</div>
+                <div class="feat-fs-cta">Visit store →</div>
+            </div>
+        </div>
+    </a>`;
+
+    // Count stores for category tiles
+    const tsCount  = menStores.filter(s => s.tallSpecific).length + womenStores.filter(s => s.tallSpecific).length;
+    const ins38    = menStores.filter(s => s.inseam && s.inseam >= 38).length;
+
+    const catGrid = `
+    <div class="feat-cat-section">
+        <h2 class="feat-cat-heading">Browse the Directory</h2>
+        <p class="feat-cat-sub">Find the right store by category or jump straight to what you need.</p>
+        <div class="feat-cat-grid">
+            <div class="feat-cat-tile" onclick="switchTab('men')">
+                <div class="feat-cat-icon" style="background:rgba(48,26,75,0.09)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#301a4b" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                    <div class="feat-cat-name">Men's Tall</div>
+                    <div class="feat-cat-count">${menStores.length} stores</div>
+                </div>
+            </div>
+            <div class="feat-cat-tile" onclick="switchTab('women')">
+                <div class="feat-cat-icon" style="background:rgba(184,90,94,0.09)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#b85a5e" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                    <div class="feat-cat-name">Women's Tall</div>
+                    <div class="feat-cat-count">${womenStores.length} stores</div>
+                </div>
+            </div>
+            <div class="feat-cat-tile" onclick="switchTab('men');toggleFilter('tallSpecific')">
+                <div class="feat-cat-icon" style="background:rgba(63,108,81,0.09)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f6c51" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div>
+                    <div class="feat-cat-name">Tall-Specific</div>
+                    <div class="feat-cat-count">${tsCount} dedicated stores</div>
+                </div>
+            </div>
+            <div class="feat-cat-tile" onclick="switchTab('men');setInseam(38)">
+                <div class="feat-cat-icon" style="background:rgba(74,138,150,0.09)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a96" stroke-width="1.8"><path d="M21 6H3"/><path d="M21 12H3"/><path d="M21 18H3"/></svg>
+                </div>
+                <div>
+                    <div class="feat-cat-name">38" Inseam +</div>
+                    <div class="feat-cat-count">${ins38} stores carry it</div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+    document.getElementById('featuredGrid').innerHTML = heroHtml + catGrid;
+}
+
+// ── MODALS (shared logic) ────────────────────────────────────────────────────
+function openOverlay(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeOverlay(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+}
+function openModal()    { openOverlay('modalOverlay'); }
+function closeModal()   { closeOverlay('modalOverlay'); }
+function openFeedback() { openOverlay('feedbackOverlay'); }
+function closeFeedback(){ closeOverlay('feedbackOverlay'); }
+function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeFeedback(); } });
+
+// Shared form submit handler
+function bindFormSubmit(formId, successId, defaultLabel) {
+    document.getElementById(formId).addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = this.querySelector('.form-submit');
+        btn.textContent = 'Sending...'; btn.disabled = true;
+        try {
+            const res = await fetch(this.action, {
+                method: 'POST', body: new FormData(this),
+                headers: { Accept: 'application/json' }
+            });
+            if (res.ok) {
+                this.style.display = 'none';
+                document.getElementById(successId).style.display = 'block';
+            } else { throw new Error(); }
+        } catch {
+            btn.textContent = defaultLabel; btn.disabled = false;
+            alert('Something went wrong. Please try again.');
+        }
+    });
+}
+bindFormSubmit('submitForm',   'formSuccess',     'Submit Store →');
+bindFormSubmit('feedbackForm', 'feedbackSuccess',  'Send Feedback →');
+
+// ── FILTERS ──────────────────────────────────────────────────────────────────
+function toggleFilter(key) {
+    if (key === 'all') { clearFilters(); return; }
+    AF[key] = !AF[key];
+    document.getElementById(`f-${key}`).classList.toggle('on', AF[key]);
+    const any = Object.values(AF).some(Boolean);
+    document.getElementById('f-all').classList.toggle('on', !any);
+    updateClear();
+    render();
+}
+
+function setInseam(v) {
+    minInseam = v;
+    document.querySelectorAll('[data-ins]').forEach(b =>
+        b.classList.toggle('on', +b.dataset.ins === v));
+    updateClear();
+    render();
+}
+
+function clearFilters(silent=false) {
+    ['tallSpecific','hasTops','hasBottoms'].forEach(k => { AF[k]=false; document.getElementById(`f-${k}`).classList.remove('on'); });
+    document.getElementById('f-all').classList.add('on');
+    minInseam = 0;
+    document.querySelectorAll('[data-ins]').forEach(b => b.classList.toggle('on', b.dataset.ins==='0'));
+    document.getElementById('searchInput').value = '';
+    document.getElementById('clearBtn').style.display = 'none';
+    if (!silent) render();
+}
+
+function updateClear() {
+    const active = Object.values(AF).some(Boolean) || minInseam > 0
+        || document.getElementById('searchInput').value.trim() !== '';
+    document.getElementById('clearBtn').style.display = active ? '' : 'none';
+}
+
+let _searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+    updateClear();
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(render, 150);
+});
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+    const q    = document.getElementById('searchInput').value.toLowerCase().trim();
+    const data = tab==='men' ? menStores : womenStores;
+
+    let list = data.filter(s => {
+        if (AF.tallSpecific && !s.tallSpecific) return false;
+        if (AF.hasTops      && !s.hasTops)      return false;
+        if (AF.hasBottoms   && !s.hasBottoms)   return false;
+        if (tab==='men' && minInseam>0 && (s.inseam===null || s.inseam<minInseam)) return false;
+        if (q && !s.name.toLowerCase().includes(q)) return false;
+        return true;
+    });
+
+    // Already pre-sorted A-Z
+
+    document.getElementById('countPill').textContent  = `${list.length} store${list.length!==1?'s':''}`;
+    document.getElementById('storeGrid').style.display = list.length ? '' : 'none';
+    document.getElementById('noResults').style.display  = list.length ? 'none' : '';
+    if (!list.length) return;
+
+    const isMen = tab==='men';
+
+    document.getElementById('storeGrid').innerHTML = list.map(s => {
+        const bg  = cardBg(s.name);
+        const ini = s.name[0].toUpperCase();
+        const tag = s.url
+            ? `<a class="card" href="${s.url}" target="_blank" rel="noopener">`
+            : `<div class="card">`;
+        const endTag = s.url ? `</a>` : `</div>`;
+
+        const logoHtml = s.domain
+            ? `<div class="logo-badge"><img
+                    src="https://www.google.com/s2/favicons?domain=${s.domain}&sz=256"
+                    alt="${s.name} logo"
+                    onerror="this.parentElement.style.display='none';this.closest('.card-img').querySelector('.card-initial').style.display='block'">
+               </div>`
+            : '';
+        const initialHtml = `<span class="card-initial"${s.domain ? ' style="display:none"' : ''}>${ini}</span>`;
+
+        const strip = isMen
+            ? `<div class="card-strip">
+                <div class="card-strip-top">${s.topSizes||'-'}</div>
+                <div class="card-strip-inseam">${s.inseamD||'-'} inseam</div>
+               </div>`
+            : `<div class="card-strip">
+                <div class="card-strip-top">${s.topSizes||'-'}</div>
+                <div class="card-strip-inseam">${s.bottomSizes||'-'}</div>
+               </div>`;
+
+        const inseamHtml = isMen
+            ? `<span class="inseam-val${s.inseam&&s.inseam>=38?' hi':''}">${s.inseamD||'-'}</span>`
+            : `<span class="inseam-val">${s.bottomSizes ? s.bottomSizes.split(',')[0] : '-'}</span>`;
+
+        return `
+        ${tag}
+            <div class="card-img" style="background:${bg}">
+                ${logoHtml}
+                ${initialHtml}
+                ${strip}
+                ${s.tallSpecific ? '<div class="star-badge">★</div>' : ''}
+            </div>
+            <div class="card-info">
+                <div class="badge-row">
+                    ${s.tallSpecific ? '<span class="badge b-tall">Tall Specific</span>' : ''}
+                    ${s.hasTops     ? '<span class="badge b-tops">Tops</span>'           : ''}
+                    ${s.hasBottoms  ? '<span class="badge b-bottoms">Bottoms</span>'     : ''}
+                </div>
+                <div class="name-row">
+                    <span class="store-name">${s.name}</span>
+                    ${inseamHtml}
+                </div>
+                ${isMen && s.waist ? `<div class="sizes-line">Waist ${s.waist}</div>` : ''}
+                ${s.notes ? `<div class="card-notes" onclick="event.preventDefault();this.classList.toggle('expanded')">${s.notes}</div>` : ''}
+            </div>
+        ${endTag}`;
+    }).join('');
+}
+
+switchTab('featured');
+</script>
+</body>
+</html>
