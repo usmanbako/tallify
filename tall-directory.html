@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The tall clothing directory. Browse 85+ vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
+    <meta name="description" id="metaDesc" content="The tall clothing directory. Browse 87 vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
     <meta name="theme-color" content="#111111">
     <meta property="og:title" content="Tallfind - Tall Clothing Directory">
-    <meta property="og:description" content="The tall clothing directory. Browse 85+ vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
+    <meta property="og:description" id="ogDesc" content="The tall clothing directory. Browse 87 vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
     <meta property="og:type" content="website">
     <title>Tallfind - Tall Clothing Directory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,14 +102,21 @@
         .hero-title em { color: var(--purple); font-style: normal; }
         .hero-meta { font-size: 14px; color: var(--muted); max-width: 260px; line-height: 1.65; padding-bottom: 6px; }
 
-        /* ── ATTRIBUTION ──────────────────────── */
-        .attribution {
-            display: flex; align-items: center; gap: 10px;
-            padding: 12px 18px; border: 1px solid var(--border);
-            border-radius: var(--pill); background: var(--surface);
-            font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5;
+        /* ── FOCUS ────────────────────────────── */
+        .pill:focus-visible, .fav-btn:focus-visible, .modal-close:focus-visible,
+        .form-submit:focus-visible, .form-input:focus-visible, .form-select:focus-visible,
+        .form-textarea:focus-visible, .feat-cat-tile:focus-visible, a.card:focus-visible {
+            outline: 2px solid var(--purple); outline-offset: 2px;
         }
-        .attribution a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+
+        /* ── EDITORIAL CREDIT ────────────────── */
+        .feat-credit {
+            font-size: 12px; color: var(--muted); text-align: center;
+            padding: 24px 0 0; margin-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .feat-credit a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+        .feat-credit a:hover { color: var(--text); }
 
         /* ── TOOLBAR ───────────────────────────── */
         .toolbar {
@@ -534,8 +541,8 @@
             <input type="text" id="searchInput" placeholder="Search stores…">
         </div>
         <div class="pill pill-solid pill-sm" id="countPill" style="display:none">0 stores</div>
-        <button class="pill pill-solid pill-sm" onclick="openModal()">+<span class="btn-label"> Submit a Store</span></button>
-        <button class="pill pill-sm" onclick="openFeedback()">💬<span class="btn-label"> Feedback</span></button>
+        <button class="pill pill-solid pill-sm" id="btnSubmit" onclick="openModal()">+<span class="btn-label"> Submit a Store</span></button>
+        <button class="pill pill-sm" id="btnFeedback" onclick="openFeedback()">💬<span class="btn-label"> Feedback</span></button>
     </div>
 </header>
 
@@ -544,9 +551,6 @@
     <!-- FEATURED SECTION (full-viewport, outside main) -->
     <div id="featuredSection">
         <div id="featuredGrid"></div>
-        <div class="attribution" id="wipBanner" style="display:none;max-width:1600px;margin:0 auto;padding:0 48px;">
-            <span>Store data originally compiled by <a href="https://www.reddit.com/u/wildthingking" target="_blank" rel="noopener">u/wildthingking</a> on Reddit.</span>
-        </div>
     </div>
 
     <main id="mainContent" style="display:none">
@@ -588,7 +592,7 @@
 </div><!-- /wrap -->
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" onclick="handleOverlayClick(event)">
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal">
         <div class="modal-header">
             <h2 class="modal-title" id="modalTitle">Submit a Store</h2>
@@ -647,7 +651,7 @@
 </div>
 
 <!-- FEEDBACK MODAL -->
-<div class="modal-overlay" id="feedbackOverlay" aria-hidden="true" role="dialog" aria-labelledby="feedbackTitle" onclick="if(event.target===this)closeFeedback()">
+<div class="modal-overlay" id="feedbackOverlay" aria-hidden="true" role="dialog" aria-labelledby="feedbackTitle">
     <div class="modal">
         <div class="modal-header">
             <h2 class="modal-title" id="feedbackTitle">Site Feedback</h2>
@@ -707,7 +711,7 @@ const menStores = [
     { name:"American Tall",       domain:"americantall.com",      tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Semi-Tall, Tall, Xtra Tall - S–3XL", inseam:40, inseamD:'40"', waist:'28"–40"', notes:"Sizing and quality vary by item; check reviews", url:"https://www.americantall.com" },
     { name:"Asket",               domain:"asket.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Long - S–XXL",                   inseam:null,inseamD:"Not specified",waist:'Long - Waist 28"–38"', notes:null, url:"https://www.asket.com" },
     { name:"Banana Republic",     domain:"bananarepublic.gap.com",tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:null,inseamD:"Not specified",waist:"Tall - M–XXL", notes:null, url:"https://bananarepublic.gap.com" },
-    { name:"Baseballism",         domain:"baseballism.com",       tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"No official Tall - longer-cut tees", inseam:null,inseamD:"N/A (shorts only)",waist:null, notes:"Shirts run ~4\" longer than standard; not official tall sizing", url:"https://www.baseballism.com" },
+    { name:"Baseballism",         domain:"baseballism.com",       tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Longer-cut tees",                    inseam:null,inseamD:"N/A (shorts only)",waist:null, notes:"Shirts run ~4\" longer than standard; no official tall label", url:"https://www.baseballism.com" },
     { name:"Bobby Love",          domain:"bobbylove.com",         tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"S–3XL",                          inseam:38, inseamD:'38"', waist:'30"–40" (S–4XL)', notes:null, url:"https://www.bobbylove.com" },
     { name:"Bonobos",             domain:"bonobos.com",           tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Long - XS–2XL",                  inseam:36, inseamD:'36"', waist:'30"–40" (Long M–XXL)', notes:null, url:"https://www.bonobos.com" },
     { name:"Carhartt",            domain:"carhartt.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–5XL",                   inseam:null,inseamD:"Not specified",waist:"Tall - S–4XL", notes:null, url:"https://www.carhartt.com" },
@@ -723,7 +727,7 @@ const menStores = [
     { name:"Girav",               domain:"girav.com",             tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall S–2XL / Tall Long S–3XL / Tall Extra Long M–3XL", inseam:null,inseamD:"Long / X-Long / XX-Long",waist:"Long S–2XL / Extra Long M–2XL / XX-Long M–2XL", notes:"European-based tall-specific store", url:"https://www.girav.com" },
     { name:"HaveItTall",          domain:"haveittall.com",        tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–3XL",                   inseam:42, inseamD:'42"', waist:'32"–40"', notes:null, url:"https://www.haveittall.com" },
     { name:"Hollister",           domain:"hollisterco.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - XS–2XL",                  inseam:36, inseamD:'36"', waist:'30"–38" (Tall XS–XXL)', notes:null, url:"https://www.hollisterco.com" },
-    { name:"Huckberry",           domain:"huckberry.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"None found",                     inseam:36, inseamD:'36"', waist:'33"–40"', notes:"Bottoms only; tall tops not currently available", url:"https://www.huckberry.com" },
+    { name:"Huckberry",           domain:"huckberry.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"N/A",                            inseam:36, inseamD:'36"', waist:'33"–40"', notes:"Bottoms only; tall tops not currently available", url:"https://www.huckberry.com" },
     { name:"J. Crew",             domain:"jcrew.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",                   inseam:36, inseamD:'36"', waist:'34" (limited waist options)', notes:"Good formal wear selection; limited waist sizes at 36\" inseam", url:"https://www.jcrew.com" },
     { name:"JCPenney",            domain:"jcpenney.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Big & Tall - XL–4XL",            inseam:38, inseamD:'38"', waist:'32"–42"', notes:null, url:"https://www.jcpenney.com" },
     { name:"Johnnie-O",           domain:"johnnie-o.com",         tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL, Big - L–4XL",      inseam:34, inseamD:'34"', waist:'30"–40"', notes:null, url:"https://www.johnnie-o.com" },
@@ -733,9 +737,9 @@ const menStores = [
     { name:"Lands' End",          domain:"landsend.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL, B&T - 2XL–4XL",   inseam:null,inseamD:'Long - 34"–42"', waist:'B&T 44"–54"', notes:null, url:"https://www.landsend.com" },
     { name:"Levi's",              domain:"levi.com",              tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - L–4XL",                   inseam:40, inseamD:'40"', waist:'32"–66" (limited waist at 36"–40")', notes:"Limited waist options at longer inseams", url:"https://www.levi.com" },
     { name:"L.L.Bean",            domain:"llbean.com",            tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–3XL",                   inseam:36, inseamD:'36"', waist:'30"–44"', notes:null, url:"https://www.llbean.com" },
-    { name:"Lululemon",           domain:"lululemon.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"None found",                     inseam:37, inseamD:'37"', waist:'28"–46" (XS–2XL)', notes:"Tall sizes available for bottoms only", url:"https://www.lululemon.com" },
+    { name:"Lululemon",           domain:"lululemon.com",         tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"N/A",                            inseam:37, inseamD:'37"', waist:'28"–46" (XS–2XL)', notes:"Tall sizes available for bottoms only", url:"https://www.lululemon.com" },
     { name:"Marine Layer",        domain:"marinelayer.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"M/L or L/XL (longer cut)",       inseam:null,inseamD:"Not specified",waist:"Tall - M–2XL", notes:"Shirts cut one length size up; small selection of tall pants", url:"https://www.marinelayer.com" },
-    { name:"MediumTall",          domain:"mediumtall.com",        tallSpecific:true,  hasTops:true,  hasBottoms:false, topSizes:"Unknown",                        inseam:null,inseamD:"Unknown", waist:null, notes:"European-based; US availability may be limited", url:"https://www.mediumtall.com" },
+    { name:"MediumTall",          domain:"mediumtall.com",        tallSpecific:true,  hasTops:true,  hasBottoms:false, topSizes:"Varies",                         inseam:null,inseamD:"Varies",  waist:null, notes:"European-based; US availability may be limited", url:"https://www.mediumtall.com" },
     { name:"Navas",               domain:"navaslab.com",          tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL, Extra Tall - M–2XL", inseam:36, inseamD:'36"', waist:'32"–38"', notes:null, url:"https://www.navaslab.com" },
     { name:"Nike",                domain:"nike.com",              tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - S–4XL",                   inseam:null,inseamD:"Not listed",waist:"Tall - S–4XL", notes:"Longer pants may exist per waist size; no inseam listed", url:"https://www.nike.com" },
     { name:"Old Navy",            domain:"oldnavy.com",           tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–4XL",                   inseam:38, inseamD:'38"', waist:'26"–54" (M–4XL)', notes:null, url:"https://www.oldnavy.com" },
@@ -752,7 +756,7 @@ const womenStores = [
     { name:"Abercrombie & Fitch", domain:"abercrombie.com",       tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tall - M–2XL",              bottomSizes:'Long/Extra Long - Waist 23"–37"',  notes:"Tall 'tops' are mostly dresses", url:"https://www.abercrombie.com" },
     { name:"Alloy",               domain:"alloyapparel.com",       tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"XS–2XL",                    bottomSizes:"2–20",                             notes:null, url:"https://www.alloyapparel.com" },
     { name:"Amalli Talli",        domain:"amalliandtalli.com",     tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"S–2XL",                     bottomSizes:'Sizes 27–36 (brand-specific), 38" inseam', notes:null, url:"https://www.amalliandtalli.com" },
-    { name:"American Eagle",      domain:"ae.com",                 tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"No Tall sizes listed",      bottomSizes:"Long 000–20, S–XL / X-Long 0–14", notes:null, url:"https://www.ae.com" },
+    { name:"American Eagle",      domain:"ae.com",                 tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"N/A",                       bottomSizes:"Long 000–20, S–XL / X-Long 0–14", notes:"Tall sizing for bottoms only", url:"https://www.ae.com" },
     { name:"American Tall",       domain:"americantall.com",       tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"XS–2XL (sizes 2–20)",       bottomSizes:"XS–2XL (sizes 2–36)",              notes:"Sizing and quality vary by item; check reviews", url:"https://www.americantall.com" },
     { name:"Ann Taylor",          domain:"anntaylor.com",          tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XS–XXL",                    bottomSizes:"0–18",                             notes:null, url:"https://www.anntaylor.com" },
     { name:"Anthropologie",       domain:"anthropologie.com",      tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - XS–XL",              bottomSizes:"Tall sizes not specified",          notes:null, url:"https://www.anthropologie.com" },
@@ -762,7 +766,7 @@ const womenStores = [
     { name:"Dri Duck",            domain:"dri-duck.com",           tallSpecific:false, hasTops:true,  hasBottoms:false, topSizes:"Tall - XL–2XL",             bottomSizes:"None",                             notes:"Tees/fleeces don't have tall sizes", url:"https://www.dri-duck.com" },
     { name:"Gap",                 domain:"gap.com",                tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"4–20",                      bottomSizes:"00–20, LONG",                      notes:"Tall options for dresses, one pieces, outerwear, and blazers", url:"https://www.gap.com" },
     { name:"Hollister",           domain:"hollisterco.com",        tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"Tends to run long",         bottomSizes:"Tends to run long",                notes:"No specific Tall sizing - clothes run longer overall", url:"https://www.hollisterco.com" },
-    { name:"Levi's",              domain:"levi.com",               tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"No Tall sizes listed",      bottomSizes:'38" inseam - Waist 23"–34"',       notes:"Only one jeans option (501)", url:"https://www.levi.com" },
+    { name:"Levi's",              domain:"levi.com",               tallSpecific:false, hasTops:false, hasBottoms:true,  topSizes:"N/A",                       bottomSizes:'38" inseam - Waist 23"–34"',       notes:"Tall sizing for bottoms only (501 jeans)", url:"https://www.levi.com" },
     { name:"L.L.Bean",            domain:"llbean.com",             tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"XXS–3XL",                   bottomSizes:"2–20",                             notes:null, url:"https://www.llbean.com" },
     { name:"Loft",                domain:"loft.com",               tallSpecific:false, hasTops:true,  hasBottoms:true,  topSizes:"0–18",                      bottomSizes:"0–18",                             notes:"Good dresses/skirts selection; tops are mostly blazers", url:"https://www.loft.com" },
     { name:"Long Tall Sally",     domain:"longtallsally.com",      tallSpecific:true,  hasTops:true,  hasBottoms:true,  topSizes:"4–20, One Size",            bottomSizes:"4–28",                             notes:null, url:"https://www.longtallsally.com/us" },
@@ -815,7 +819,7 @@ const featuredStores = [
     {
         section: "Women's Pick",
         name: "Long Tall Sally", domain: "longtallsally.com",
-        heroImage: null, // paste CDN/OG image URL here
+        heroImage: null,
         url: "https://www.longtallsally.com",
         blurb: "The original dedicated tall women's retailer. Decades of experience shows: pants up to size 28, tops to size 20, and a selection that genuinely understands the tall body rather than just hemming standard cuts.",
         tags: ['Tall-specific', 'Tops 4–20', 'Bottoms 4–28'],
@@ -824,7 +828,7 @@ const featuredStores = [
     {
         section: "Women's Pick",
         name: "Old Navy", domain: "oldnavy.com",
-        heroImage: null, // paste CDN/OG image URL here
+        heroImage: null,
         url: "https://www.oldnavy.com/browse/category.do?cid=55876",
         blurb: "The most accessible option for tall women on a budget. Tall sizes run XS–XXL in tops and 00–20 in bottoms, with tall options extending to dresses, outerwear, and swimwear. Rare to find that much range in one place.",
         tags: ['XS–XXL tops', '00–20 bottoms', 'Dresses', 'Swimwear'],
@@ -847,7 +851,6 @@ function getFavs() {
     try { return JSON.parse(localStorage.getItem('tallfind_favs') || '[]'); } catch { return []; }
 }
 function setFavs(arr) { localStorage.setItem('tallfind_favs', JSON.stringify(arr)); }
-function isFav(name) { return getFavs().includes(name); }
 function toggleFav(name, e) {
     e.preventDefault(); e.stopPropagation();
     const favs = getFavs();
@@ -873,12 +876,10 @@ function switchTab(t) {
     document.getElementById('countPill').style.display       = isFeatured ? 'none' : '';
 
     if (isFeatured) {
-        document.getElementById('wipBanner').style.display = '';
         renderFeatured();
         return;
     }
 
-    document.getElementById('wipBanner').style.display = 'none';
     document.getElementById('inseamRow').style.display = t==='men'   ? '' : 'none';
     document.getElementById('heroTitle').innerHTML = t==='men'
         ? "Men's Tall<br><em>Directory</em>" : "Women's Tall<br><em>Directory</em>";
@@ -891,8 +892,7 @@ function switchTab(t) {
 
 // ── FEATURED RENDER ───────────────────────────────────────────────────────────
 function renderFeatured() {
-    const hero  = featuredStores[0];
-    const picks = featuredStores.slice(1);
+    const hero = featuredStores[0];
 
     // Full-screen hero
     const hasImg   = !!hero.heroImage;
@@ -921,7 +921,7 @@ function renderFeatured() {
         <h2 class="feat-cat-heading">Browse the Directory</h2>
         <p class="feat-cat-sub">Find the right store by category or jump straight to what you need.</p>
         <div class="feat-cat-grid">
-            <div class="feat-cat-tile" onclick="switchTab('men')">
+            <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men')" onkeydown="if(event.key==='Enter')this.click()">
                 <div class="feat-cat-icon" style="background:rgba(48,26,75,0.09)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#301a4b" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
@@ -930,7 +930,7 @@ function renderFeatured() {
                     <div class="feat-cat-count">${menStores.length} stores</div>
                 </div>
             </div>
-            <div class="feat-cat-tile" onclick="switchTab('women')">
+            <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('women')" onkeydown="if(event.key==='Enter')this.click()">
                 <div class="feat-cat-icon" style="background:rgba(184,90,94,0.09)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#b85a5e" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
@@ -939,7 +939,7 @@ function renderFeatured() {
                     <div class="feat-cat-count">${womenStores.length} stores</div>
                 </div>
             </div>
-            <div class="feat-cat-tile" onclick="switchTab('men');toggleFilter('tallSpecific')">
+            <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men');toggleFilter('tallSpecific')" onkeydown="if(event.key==='Enter')this.click()">
                 <div class="feat-cat-icon" style="background:rgba(63,108,81,0.09)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#3f6c51" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
@@ -948,7 +948,7 @@ function renderFeatured() {
                     <div class="feat-cat-count">${tsCount} dedicated stores</div>
                 </div>
             </div>
-            <div class="feat-cat-tile" onclick="switchTab('men');setInseam(38)">
+            <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men');setInseam(38)" onkeydown="if(event.key==='Enter')this.click()">
                 <div class="feat-cat-icon" style="background:rgba(74,138,150,0.09)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a96" stroke-width="1.8"><path d="M21 6H3"/><path d="M21 12H3"/><path d="M21 18H3"/></svg>
                 </div>
@@ -958,6 +958,9 @@ function renderFeatured() {
                 </div>
             </div>
         </div>
+        <div class="feat-credit">
+            Directory data sourced from community research by <a href="https://www.reddit.com/u/wildthingking" target="_blank" rel="noopener">u/wildthingking</a>
+        </div>
     </div>`;
 
     document.getElementById('featuredGrid').innerHTML = heroHtml + catGrid;
@@ -965,13 +968,15 @@ function renderFeatured() {
 
 // ── MODALS (shared logic) ────────────────────────────────────────────────────
 let _activeOverlay = null;
+let _triggerEl = null;
+
 function openOverlay(id) {
+    _triggerEl = document.activeElement;
     _activeOverlay = id;
     const el = document.getElementById(id);
     el.classList.add('open');
     el.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    // Focus first focusable element
     setTimeout(() => {
         const focusable = el.querySelector('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
         if (focusable) focusable.focus();
@@ -983,14 +988,21 @@ function closeOverlay(id) {
     el.classList.remove('open');
     el.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (_triggerEl && _triggerEl.focus) { _triggerEl.focus(); _triggerEl = null; }
 }
 function openModal()    { openOverlay('modalOverlay'); }
 function closeModal()   { closeOverlay('modalOverlay'); }
 function openFeedback() { openOverlay('feedbackOverlay'); }
 function closeFeedback(){ closeOverlay('feedbackOverlay'); }
-function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
 
-// Keyboard: Escape to close, Tab trapping inside modals
+// Close modal on backdrop click (works for both modals)
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay && _activeOverlay) closeOverlay(_activeOverlay);
+    });
+});
+
+// Keyboard: Escape to close, Tab trapping, arrow keys for tabs
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && _activeOverlay) {
         closeOverlay(_activeOverlay);
@@ -998,11 +1010,20 @@ document.addEventListener('keydown', e => {
     }
     if (e.key === 'Tab' && _activeOverlay) {
         const overlay = document.getElementById(_activeOverlay);
-        const focusable = overlay.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const focusable = [...overlay.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')];
         if (!focusable.length) return;
         const first = focusable[0], last = focusable[focusable.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    // Arrow key navigation for tabs
+    if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && document.activeElement?.role === 'tab') {
+        const tabs = ['featured', 'men', 'women'];
+        const idx = tabs.indexOf(tab);
+        const next = e.key === 'ArrowRight' ? (idx + 1) % 3 : (idx + 2) % 3;
+        switchTab(tabs[next]);
+        document.getElementById('tab-' + tabs[next]).focus();
+        e.preventDefault();
     }
 });
 
@@ -1148,11 +1169,24 @@ function render() {
                     ${inseamHtml}
                 </div>
                 ${isMen && s.waist ? `<div class="sizes-line">Waist ${s.waist}</div>` : ''}
-                ${s.notes ? `<div class="card-notes" onclick="event.preventDefault();this.classList.toggle('expanded')">${s.notes}</div>` : ''}
+                ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
             </div>
         ${endTag}`;
     }).join('');
 }
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+// Data-driven meta description
+const _total = menStores.length + womenStores.length;
+const _metaText = `The tall clothing directory. Browse ${_total} vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.`;
+document.getElementById('metaDesc').setAttribute('content', _metaText);
+document.getElementById('ogDesc').setAttribute('content', _metaText);
+
+// Event delegation: card notes expand
+document.getElementById('storeGrid').addEventListener('click', e => {
+    const notes = e.target.closest('.card-notes');
+    if (notes) { e.preventDefault(); notes.classList.toggle('expanded'); }
+});
 
 switchTab('featured');
 </script>
