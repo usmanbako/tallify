@@ -148,7 +148,8 @@
         }
 
         /* ── CARD ──────────────────────────────── */
-        .card { display: flex; flex-direction: column; cursor: default; }
+        .card-wrap { position: relative; }
+        .card { display: flex; flex-direction: column; }
 
         .card-img {
             width: 100%; aspect-ratio: 3/4;
@@ -223,16 +224,19 @@
         .card-notes:hover { color: #444; }
         .card-notes.expanded { display: block; }
 
-        .visit-link {
+        /* Card outbound CTA */
+        .card-cta {
             display: inline-flex; align-items: center; gap: 4px;
             font-size: 12px; font-weight: 500; color: var(--muted);
-            text-decoration: none; margin-top: 5px; transition: color 0.15s, gap 0.15s;
+            margin-top: 4px; letter-spacing: 0.01em;
         }
-        .visit-link:hover { color: var(--text); gap: 8px; }
+        .card-cta .arrow { display: inline-block; transition: transform 0.2s; font-size: 11px; }
+        a.card:hover .card-cta { color: var(--text); }
+        a.card:hover .card-cta .arrow { transform: translate(1px, -1px); }
 
         /* ── FAVORITES ────────────────────────── */
         .fav-btn {
-            position: absolute; top: 10px; right: 10px; z-index: 5;
+            position: absolute; top: 12px; right: 12px; z-index: 10;
             width: 32px; height: 32px; border-radius: 50%;
             background: rgba(255,255,255,0.85); backdrop-filter: blur(4px);
             border: 1px solid var(--border);
@@ -898,7 +902,7 @@ function renderFeatured() {
     const hasImg   = !!hero.heroImage;
     const bgStyle  = hasImg ? `background-image:url('${hero.heroImage}');background-size:cover;background-position:center top;` : '';
     const heroHtml = `
-    <a href="${hero.url}" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+    <a href="${hero.url}" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit;">
         <div class="feat-fullscreen${hasImg ? '' : ' no-img'}" style="${bgStyle}">
             ${hasImg ? '<div class="feat-fs-overlay"></div>' : ''}
             <div class="feat-fs-content">
@@ -1121,57 +1125,57 @@ function render() {
     document.getElementById('storeGrid').innerHTML = list.map(s => {
         const bg  = cardBg(s.name);
         const ini = s.name[0].toUpperCase();
-        const tag = s.url
-            ? `<a class="card" href="${s.url}" target="_blank" rel="noopener">`
-            : `<div class="card">`;
-        const endTag = s.url ? `</a>` : `</div>`;
+        const esc = s.name.replace(/'/g, "\\'");
+        const hasUrl = !!s.url;
 
+        // Logo: always show monogram; badge overlays on top if favicon loads
         const logoHtml = s.domain
             ? `<div class="logo-badge"><img
                     src="https://www.google.com/s2/favicons?domain=${s.domain}&sz=256"
-                    alt="${s.name} logo"
-                    onerror="this.parentElement.style.display='none';this.closest('.card-img').querySelector('.card-initial').style.display='block'">
+                    alt="" loading="lazy"
+                    onerror="this.closest('.logo-badge').style.display='none'">
                </div>`
             : '';
-        const initialHtml = `<span class="card-initial"${s.domain ? ' style="display:none"' : ''}>${ini}</span>`;
 
-        const strip = isMen
-            ? `<div class="card-strip">
-                <div class="card-strip-top">${s.topSizes||'-'}</div>
-                <div class="card-strip-inseam">${s.inseamD||'-'} inseam</div>
-               </div>`
-            : `<div class="card-strip">
-                <div class="card-strip-top">${s.topSizes||'-'}</div>
-                <div class="card-strip-inseam">${s.bottomSizes||'-'}</div>
-               </div>`;
+        // Sizing strip (unified for men/women)
+        const stripTop = s.topSizes || '-';
+        const stripBottom = isMen ? `${s.inseamD || '-'} inseam` : (s.bottomSizes || '-');
 
         const inseamHtml = isMen
-            ? `<span class="inseam-val${s.inseam&&s.inseam>=38?' hi':''}">${s.inseamD||'-'}</span>`
+            ? `<span class="inseam-val${s.inseam && s.inseam >= 38 ? ' hi' : ''}">${s.inseamD || '-'}</span>`
             : `<span class="inseam-val">${s.bottomSizes ? s.bottomSizes.split(',')[0] : '-'}</span>`;
 
+        const isFaved = favs.includes(s.name);
+
         return `
-        ${tag}
-            <div class="card-img" style="background:${bg}">
-                <button class="fav-btn${favs.includes(s.name) ? ' active' : ''}" onclick="toggleFav('${s.name.replace(/'/g,"\\'")}',event)" title="${favs.includes(s.name) ? 'Remove from favorites' : 'Add to favorites'}">${favs.includes(s.name) ? '♥' : '♡'}</button>
-                ${logoHtml}
-                ${initialHtml}
-                ${strip}
-                ${s.tallSpecific ? '<div class="star-badge">★</div>' : ''}
-            </div>
-            <div class="card-info">
-                <div class="badge-row">
-                    ${s.tallSpecific ? '<span class="badge b-tall">Tall Specific</span>' : ''}
-                    ${s.hasTops     ? '<span class="badge b-tops">Tops</span>'           : ''}
-                    ${s.hasBottoms  ? '<span class="badge b-bottoms">Bottoms</span>'     : ''}
+        <div class="card-wrap">
+            ${hasUrl ? `<a class="card" href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.name} — visit store">` : '<div class="card">'}
+                <div class="card-img" style="background:${bg}">
+                    ${logoHtml}
+                    <span class="card-initial">${ini}</span>
+                    <div class="card-strip">
+                        <div class="card-strip-top">${stripTop}</div>
+                        <div class="card-strip-inseam">${stripBottom}</div>
+                    </div>
+                    ${s.tallSpecific ? '<div class="star-badge" aria-hidden="true">★</div>' : ''}
                 </div>
-                <div class="name-row">
-                    <span class="store-name">${s.name}</span>
-                    ${inseamHtml}
+                <div class="card-info">
+                    <div class="badge-row">
+                        ${s.tallSpecific ? '<span class="badge b-tall">Tall Specific</span>' : ''}
+                        ${s.hasTops     ? '<span class="badge b-tops">Tops</span>'           : ''}
+                        ${s.hasBottoms  ? '<span class="badge b-bottoms">Bottoms</span>'     : ''}
+                    </div>
+                    <div class="name-row">
+                        <span class="store-name">${s.name}</span>
+                        ${inseamHtml}
+                    </div>
+                    ${isMen && s.waist ? `<div class="sizes-line">Waist ${s.waist}</div>` : ''}
+                    ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
+                    ${hasUrl ? '<span class="card-cta">Visit store <span class="arrow" aria-hidden="true">↗</span></span>' : ''}
                 </div>
-                ${isMen && s.waist ? `<div class="sizes-line">Waist ${s.waist}</div>` : ''}
-                ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
-            </div>
-        ${endTag}`;
+            ${hasUrl ? '</a>' : '</div>'}
+            <button class="fav-btn${isFaved ? ' active' : ''}" onclick="toggleFav('${esc}',event)" aria-label="${isFaved ? 'Remove from favorites' : 'Save to favorites'}">${isFaved ? '♥' : '♡'}</button>
+        </div>`;
     }).join('');
 }
 
