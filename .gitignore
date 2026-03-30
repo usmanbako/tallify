@@ -1,0 +1,8 @@
+# Unrelated project files
+PetApplication.zip
+app.js
+style.css
+react-app.html
+
+# Claude Code config
+.claude/
