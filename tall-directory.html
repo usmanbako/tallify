@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" id="metaDesc" content="The tall clothing directory. Browse 87 vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#fefae0">
     <meta property="og:title" content="Tallfind - Tall Clothing Directory">
     <meta property="og:description" id="ogDesc" content="The tall clothing directory. Browse 87 vetted online stores with genuine tall sizing for men and women, filtered by inseam, store type, and more.">
     <meta property="og:type" content="website">
     <title>Tallfind - Tall Clothing Directory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg:           #EFEFEF;
-            --surface:      #FFFFFF;
-            --text:         #111111;
-            --muted:        #666666;
-            --border:       rgba(17,17,17,0.14);
-            --border-dark:  1px solid #111111;
+            --bg:           #fefae0;
+            --surface:      #ffffff;
+            --text:         #3f3226;
+            --muted:        rgba(63,50,38,0.72);
+            --border:       rgba(63,50,38,0.12);
+            --border-strong: rgba(63,50,38,0.22);
 
-            /* brand accents kept from original palette */
-            --green:  #3f6c51;
-            --blue:   #4a8a96;
-            --pink:   #b85a5e;
-            --purple: #301a4b;
+            --sage:    #ccd5ae;
+            --beige:   #e9edc9;
+            --papaya:  #faedcd;
+            --bronze:  #d4a373;
+            --purple:  #d4a373; /* mapped to bronze for backward compat */
 
-            --serif: 'Playfair Display', Georgia, serif;
-            --sans:  'Inter', -apple-system, sans-serif;
+            --serif: 'DM Serif Display', serif;
+            --sans:  'Inter', sans-serif;
             --pill:  999px;
-            --card-r: 14px;
+            --card-r: 28px;
+            --transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
@@ -47,17 +48,17 @@
         /* ── PILL ──────────────────────────────── */
         .pill {
             display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-            height: 36px; padding: 0 16px; border-radius: var(--pill);
-            font-family: var(--sans); font-size: 13px; font-weight: 500;
-            border: 1px solid var(--border); background: transparent; color: var(--text);
-            cursor: pointer; transition: all 0.18s; white-space: nowrap; text-decoration: none;
+            height: 38px; padding: 0 14px; border-radius: var(--pill);
+            font-family: var(--sans); font-size: 12px; font-weight: 500;
+            border: 1px solid var(--border); background: var(--beige); color: var(--text);
+            cursor: pointer; transition: var(--transition); white-space: nowrap; text-decoration: none;
             user-select: none;
         }
-        .pill:hover            { border-color: var(--text); }
-        .pill.on               { background: var(--text); color: #fff; border-color: var(--text); }
-        .pill-sm               { height: 30px; padding: 0 12px; font-size: 12px; }
-        .pill-solid            { background: var(--surface); box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
-        .pill-solid:hover      { border-color: var(--text); }
+        .pill:hover            { border-color: var(--border-strong); background: var(--papaya); }
+        .pill.on               { background: var(--sage); border-color: var(--border-strong); color: var(--text); }
+        .pill-sm               { height: 32px; padding: 0 12px; font-size: 12px; }
+        .pill-solid            { background: var(--surface); }
+        .pill-solid:hover      { border-color: var(--border-strong); }
 
         /* ── HEADER ────────────────────────────── */
         header {
@@ -67,20 +68,20 @@
             background: var(--bg); border-bottom: 1px solid var(--border);
         }
         .logo {
-            font-family: var(--serif); font-weight: 700; font-size: 22px;
+            font-family: var(--serif); font-weight: 400; font-size: 22px;
             letter-spacing: -0.02em; color: var(--text); text-decoration: none;
         }
-        .logo em { color: var(--purple); font-style: normal; }
+        .logo em { color: var(--bronze); font-style: normal; }
         .header-nav  { display: flex; gap: 6px; }
         .header-right{ display: flex; align-items: center; gap: 8px; }
 
         .search-wrap {
             display: flex; align-items: center; gap: 8px;
-            height: 36px; padding: 0 14px; border-radius: var(--pill);
+            height: 38px; padding: 0 16px; border-radius: var(--pill);
             border: 1px solid var(--border); background: var(--surface);
-            transition: border-color 0.18s;
+            transition: var(--transition);
         }
-        .search-wrap:focus-within { border-color: var(--text); }
+        .search-wrap:focus-within { border-color: var(--bronze); background: #fffdf6; }
         .search-wrap svg { opacity: 0.35; flex-shrink: 0; }
         .search-wrap input {
             border: none; outline: none; background: transparent;
@@ -90,25 +91,41 @@
 
         /* ── HERO ──────────────────────────────── */
         .hero {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            padding: 52px 0 44px; border-bottom: 1px solid var(--border);
+            padding: 48px 0 36px;
             margin-bottom: 28px;
         }
-        .hero-title {
-            font-family: var(--serif); font-weight: 500;
-            font-size: clamp(2.8rem, 5.5vw, 4.8rem);
-            line-height: 1.05; letter-spacing: -0.03em;
+        .hero-eyebrow {
+            font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--sage); margin-bottom: 10px;
         }
-        .hero-title em { color: var(--purple); font-style: normal; }
-        .hero-meta { font-size: 14px; color: var(--muted); max-width: 260px; line-height: 1.65; padding-bottom: 6px; }
+        .hero-title {
+            font-family: var(--serif); font-weight: 400;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 0.92; letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+        .hero-title em { color: var(--bronze); font-style: normal; }
+        .hero-meta {
+            font-size: 15px; color: var(--muted); max-width: 700px;
+            line-height: 1.7; margin-bottom: 28px;
+        }
+        .hero-pills {
+            display: flex; flex-wrap: wrap; gap: 10px;
+        }
+        .meta-pill {
+            display: inline-flex; align-items: center; min-height: 38px;
+            padding: 0 14px; border-radius: var(--pill);
+            border: 1px solid var(--border); background: var(--beige);
+            font-size: 12px; color: var(--muted);
+        }
 
         /* ── FOCUS ────────────────────────────── */
         .pill:focus-visible, .fav-btn:focus-visible, .modal-close:focus-visible,
         .form-submit:focus-visible, .form-input:focus-visible, .form-select:focus-visible,
-        .form-textarea:focus-visible, .feat-cat-tile:focus-visible, a.card:focus-visible {
-            outline: 2px solid var(--purple); outline-offset: 2px;
+        .form-textarea:focus-visible, .feat-cat-tile:focus-visible, a.link-card:focus-visible {
+            outline: 2px solid var(--bronze); outline-offset: 2px;
         }
-        a.card:focus-visible { outline-offset: 3px; }
+        a.link-card:focus-visible { outline-offset: 3px; }
 
         /* ── EDITORIAL CREDIT ────────────────── */
         .feat-credit {
@@ -143,90 +160,103 @@
         /* ── GRID ──────────────────────────────── */
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
             padding-bottom: 80px;
-            background: var(--border);
+        }
+
+        /* ── SECTION BREAKS ───────────────────── */
+        .section-break {
+            grid-column: 1 / -1;
+            padding: 28px 0 6px;
+            display: flex; align-items: center; gap: 18px;
+        }
+        .section-title {
+            font-family: var(--serif); font-size: 26px;
+            color: var(--bronze); letter-spacing: -0.02em; white-space: nowrap;
+        }
+        .section-line { height: 1px; flex: 1; background: var(--border); }
+
+        /* ── LINK CARD ────────────────────────── */
+        .card-wrap { position: relative; }
+
+        .link-card {
+            background: var(--surface); border-radius: var(--card-r);
+            padding: 24px; min-height: 208px;
+            display: flex; flex-direction: column;
+            text-decoration: none; color: inherit;
             border: 1px solid var(--border);
-            border-radius: var(--card-r);
-            overflow: hidden;
+            transition: var(--transition); height: 100%;
+        }
+        .link-card:hover {
+            transform: translateY(-4px);
+            background: var(--papaya);
+            border-color: var(--border-strong);
         }
 
-        /* ── CARD ──────────────────────────────── */
-        .card-wrap { position: relative; background: var(--surface); }
-        a.card { text-decoration: none; color: inherit; cursor: pointer; display: flex; flex-direction: column; height: 100%; }
-        div.card { display: flex; flex-direction: column; height: 100%; }
+        /* Featured card color variants */
+        .link-card.featured-sage  { background: var(--sage);   border: none; }
+        .link-card.featured-sand  { background: var(--beige);  border: none; }
+        .link-card.featured-clay  { background: var(--papaya); border: none; }
+        .link-card.featured-plum  { background: var(--bronze); border: none; color: #fffdf8; }
+        .link-card.featured-sage:hover  { background: #c2ca9f; }
+        .link-card.featured-sand:hover  { background: #e3e8bf; }
+        .link-card.featured-clay:hover  { background: #f3e0b9; }
+        .link-card.featured-plum:hover  { background: #c89462; }
 
-        /* Monogram area */
-        .card-mono {
-            width: 100%; aspect-ratio: 4/3;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            background: var(--bg);
+        .link-category {
+            font-size: 10px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.12em; opacity: 0.72; margin-bottom: 12px;
         }
-        .card-initial {
-            font-family: var(--serif); font-weight: 600;
-            font-size: clamp(3rem, 4.5vw, 4.5rem);
-            color: var(--text); opacity: 0.08;
-            user-select: none; letter-spacing: -0.03em;
-            pointer-events: none;
+        .link-title {
+            font-family: var(--serif); font-size: 28px;
+            line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 10px;
         }
+        .link-description {
+            font-size: 13px; line-height: 1.55; opacity: 0.78;
+            margin-bottom: 18px;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .link-description.expanded { display: block; }
+        .link-action {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 12px; font-weight: 600; margin-top: auto;
+        }
+        .link-action svg { width: 16px; height: 16px; flex-shrink: 0; transition: transform 0.18s; }
+        .link-card:hover .link-action svg { transform: translate(2px, -2px); }
 
-        /* Card body — text stack */
-        .card-info {
-            padding: 20px 22px 24px;
-            display: flex; flex-direction: column; gap: 6px;
-            flex: 1;
+        .stats-row {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px solid var(--border);
         }
+        .link-card.featured-sage .stats-row,
+        .link-card.featured-sand .stats-row,
+        .link-card.featured-clay .stats-row,
+        .link-card.featured-plum .stats-row { border-top-color: rgba(63,50,38,0.14); }
 
-        .card-name {
-            font-family: var(--serif); font-size: 18px; font-weight: 500;
-            letter-spacing: -0.02em; line-height: 1.2;
-            margin: 0;
-            transition: color 0.15s;
+        .stat {
+            font-size: 11px; font-weight: 500;
+            padding: 6px 10px; border-radius: var(--pill);
+            background: rgba(255,255,255,0.55); border: 1px solid rgba(63,50,38,0.1);
         }
-        a.card:hover .card-name,
-        a.card:focus-visible .card-name { color: var(--purple); }
-
-        .card-headline {
-            font-size: 13px; color: var(--text); line-height: 1.45;
-            margin: 2px 0 0; font-weight: 500;
-        }
-
-        .card-sizing {
-            font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0;
-        }
-
-        .card-notes {
-            font-size: 12px; color: var(--muted); font-style: italic; line-height: 1.5;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            cursor: pointer; margin: 2px 0 0; transition: color 0.15s;
-        }
-        .card-notes:hover { color: #444; }
-        .card-notes.expanded { display: block; }
-
-        /* CTA — minimal arrow */
-        .card-cta {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 12px; font-weight: 500; color: var(--muted);
-            margin-top: auto; padding-top: 8px; letter-spacing: 0.01em;
-        }
-        .card-cta .arrow { display: inline-block; transition: transform 0.18s; }
-        a.card:hover .card-cta { color: var(--text); }
-        a.card:hover .card-cta .arrow { transform: translate(2px, -2px); }
+        .link-card.featured-sage .stat,
+        .link-card.featured-sand .stat,
+        .link-card.featured-clay .stat { background: rgba(255,255,255,0.42); }
+        .link-card.featured-plum .stat { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.18); }
 
         /* ── FAVORITES ────────────────────────── */
         .fav-btn {
-            position: absolute; top: 14px; right: 14px; z-index: 10;
+            position: absolute; top: 16px; right: 16px; z-index: 10;
             width: 30px; height: 30px; border-radius: 50%;
-            background: var(--surface); border: 1px solid var(--border);
+            background: rgba(255,255,255,0.7); border: 1px solid var(--border);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 14px; color: var(--muted);
-            transition: transform 0.15s, border-color 0.15s, color 0.15s;
-            line-height: 1;
+            transition: var(--transition); line-height: 1;
         }
-        .fav-btn:hover { transform: scale(1.1); border-color: var(--text); }
-        .fav-btn.active { color: #c0392b; border-color: #c0392b; }
+        .fav-btn:hover { transform: scale(1.1); background: var(--surface); border-color: var(--border-strong); }
+        .fav-btn.active { color: #c0392b; border-color: #c0392b; background: var(--surface); }
 
         .no-results { padding: 80px 0; text-align: center; color: var(--muted); font-size: 15px; }
 
@@ -260,12 +290,12 @@
             backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3);
             padding: 5px 14px; border-radius: var(--pill); width: fit-content;
         }
-        .no-img .feat-fs-pill { color: var(--purple); background: rgba(48,26,75,0.07); border-color: rgba(48,26,75,0.15); backdrop-filter: none; }
+        .no-img .feat-fs-pill { color: var(--bronze); background: rgba(212,163,115,0.12); border-color: rgba(212,163,115,0.25); backdrop-filter: none; }
         .feat-fs-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
         .no-img .feat-fs-eyebrow { color: var(--muted); }
         .feat-fs-name {
             font-family: var(--serif); font-size: clamp(3rem, 7vw, 6rem);
-            font-weight: 500; letter-spacing: -0.04em; line-height: 1; color: #fff;
+            font-weight: 400; letter-spacing: -0.04em; line-height: 1; color: #fff;
             text-shadow: 0 2px 24px rgba(0,0,0,0.2);
         }
         .no-img .feat-fs-name { color: var(--text); text-shadow: none; }
@@ -286,14 +316,14 @@
             transition: gap 0.15s, opacity 0.15s; margin-top: 4px;
         }
         .feat-fs-cta:hover { opacity: 0.92; gap: 12px; }
-        .no-img .feat-fs-cta { background: var(--text); color: #fff; }
+        .no-img .feat-fs-cta { background: var(--sage); color: var(--text); }
 
         /* Category grid */
         .feat-cat-section {
             max-width: 1600px; margin: 0 auto; padding: 56px 48px 80px;
         }
         .feat-cat-heading {
-            font-family: var(--serif); font-size: 32px; font-weight: 500;
+            font-family: var(--serif); font-size: 32px; font-weight: 400;
             letter-spacing: -0.025em; margin-bottom: 8px;
         }
         .feat-cat-sub {
@@ -304,12 +334,12 @@
         }
         .feat-cat-tile {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 20px; padding: 32px 28px;
+            border-radius: var(--card-r); padding: 32px 28px;
             cursor: pointer; text-decoration: none; color: inherit;
             display: flex; flex-direction: column; gap: 20px;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            transition: var(--transition);
         }
-        .feat-cat-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); border-color: rgba(17,17,17,0.22); }
+        .feat-cat-tile:hover { transform: translateY(-4px); background: var(--papaya); border-color: var(--border-strong); }
         .feat-cat-icon {
             width: 48px; height: 48px; border-radius: 14px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -331,12 +361,12 @@
             padding-bottom: 80px;
         }
         a.feat-card {
-            display: flex; border: 1px solid var(--border); border-radius: 20px;
+            display: flex; border: 1px solid var(--border); border-radius: var(--card-r);
             overflow: hidden; text-decoration: none; color: inherit;
-            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+            transition: var(--transition);
             background: var(--surface);
         }
-        a.feat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); border-color: rgba(17,17,17,0.25); }
+        a.feat-card:hover { transform: translateY(-3px); background: var(--papaya); border-color: var(--border-strong); }
         .feat-logo {
             width: 150px; flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
@@ -352,7 +382,7 @@
             display: flex; flex-direction: column; gap: 8px; justify-content: center;
         }
         .feat-eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
-        .feat-name { font-family: var(--serif); font-size: 22px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
+        .feat-name { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; }
         .feat-blurb { font-size: 13px; color: var(--muted); line-height: 1.6; }
         .feat-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
         .feat-tag {
@@ -368,7 +398,7 @@
 
         /* ── MODAL ─────────────────────────────── */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(17,17,17,0.45);
+            position: fixed; inset: 0; background: rgba(63,50,38,0.4);
             display: flex; align-items: center; justify-content: center;
             z-index: 500; opacity: 0; pointer-events: none;
             transition: opacity 0.2s;
@@ -379,12 +409,12 @@
             max-height: 90vh; overflow-y: auto;
             margin: 20px; padding: 40px;
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: var(--card-r);
             transform: translateY(12px); transition: transform 0.2s;
         }
         .modal-overlay.open .modal { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-        .modal-title { font-family: var(--serif); font-size: 28px; font-weight: 500; letter-spacing: -0.02em; }
+        .modal-title { font-family: var(--serif); font-size: 28px; font-weight: 400; letter-spacing: -0.02em; }
         .modal-close {
             background: none; border: 1px solid var(--border); width: 32px; height: 32px;
             border-radius: 50%; cursor: pointer; font-size: 18px; color: var(--muted);
@@ -406,11 +436,11 @@
         .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .form-check { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; cursor: pointer; }
-        .form-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--purple); cursor: pointer; }
+        .form-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--bronze); cursor: pointer; }
         .form-check span { font-size: 13px; }
         .form-submit {
             width: 100%; height: 44px; border-radius: var(--pill);
-            background: var(--text); color: #fff; border: none;
+            background: var(--sage); color: var(--text); border: none;
             font-family: var(--sans); font-size: 14px; font-weight: 500;
             cursor: pointer; transition: opacity 0.15s; margin-top: 8px;
         }
@@ -425,10 +455,7 @@
         .form-success p { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 400; }
 
         /* ── RESPONSIVE ────────────────────────── */
-        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3,1fr); } }
-
         @media (max-width: 900px) {
-            .grid { grid-template-columns: repeat(2,1fr); }
             .featured-grid { grid-template-columns: 1fr; }
             .feat-hero { flex-direction: column; min-height: unset; }
             .feat-hero-img { width: 100%; min-height: 220px; }
@@ -477,7 +504,6 @@
 
         @media (max-width: 480px) {
             .grid { grid-template-columns: 1fr; }
-            .card-info { padding: 16px 18px 20px; }
             .feat-cat-grid { grid-template-columns: 1fr; }
             header { padding: 10px 14px; }
             .logo { font-size: 19px; }
@@ -521,8 +547,10 @@
 
     <main id="mainContent" style="display:none">
         <div class="hero">
-            <h1 class="hero-title" id="heroTitle">Men's Tall<br><em>Directory</em></h1>
+            <p class="hero-eyebrow" id="heroEyebrow">Curated Tall Brand Directory</p>
+            <h1 class="hero-title" id="heroTitle">Men's Tall</h1>
             <p class="hero-meta" id="heroMeta">A curated list of online stores with genuine tall sizing for men 6'2" and above, filterable by inseam, store type, and more.</p>
+            <div class="hero-pills" id="heroPills"></div>
         </div>
 
         <!-- DIRECTORY CONTROLS -->
@@ -847,11 +875,18 @@ function switchTab(t) {
     }
 
     document.getElementById('inseamRow').style.display = t==='men'   ? '' : 'none';
-    document.getElementById('heroTitle').innerHTML = t==='men'
-        ? "Men's Tall<br><em>Directory</em>" : "Women's Tall<br><em>Directory</em>";
+    const data = t==='men' ? menStores : womenStores;
+    const tsCount = data.filter(s => s.tallSpecific).length;
+    document.getElementById('heroEyebrow').textContent = 'Curated Tall Brand Directory';
+    document.getElementById('heroTitle').textContent = t==='men' ? "Men's Tall" : "Women's Tall";
     document.getElementById('heroMeta').textContent = t==='men'
-        ? `${menStores.length} vetted online stores with genuine tall sizing for men 6'2\" and above. Filter by inseam, store type, and more.`
-        : `${womenStores.length} vetted online stores with tall sizing for women 5'9\" and above. Filter by store type, sizing, and more.`;
+        ? `Browse ${menStores.length} vetted online stores with genuine tall sizing for men 6'2" and above. Filter by inseam, store type, and more.`
+        : `Browse ${womenStores.length} vetted online stores with tall sizing for women 5'9" and above. Filter by store type, sizing, and more.`;
+    document.getElementById('heroPills').innerHTML =
+        `<span class="meta-pill">${data.length} stores</span>` +
+        `<span class="meta-pill">${tsCount} tall-only</span>` +
+        (t==='men' ? `<span class="meta-pill">Up to 42" inseam</span>` : `<span class="meta-pill">Extended lengths</span>`) +
+        `<span class="meta-pill">Last reviewed March 2026</span>`;
     clearFilters(true);
     render();
 }
@@ -888,8 +923,8 @@ function renderFeatured() {
         <p class="feat-cat-sub">Find the right store by category or jump straight to what you need.</p>
         <div class="feat-cat-grid">
             <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men')" onkeydown="if(event.key==='Enter')this.click()">
-                <div class="feat-cat-icon" style="background:rgba(48,26,75,0.09)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#301a4b" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <div class="feat-cat-icon" style="background:rgba(204,213,174,0.4)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f3226" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
                 <div>
                     <div class="feat-cat-name">Men's Tall</div>
@@ -897,8 +932,8 @@ function renderFeatured() {
                 </div>
             </div>
             <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('women')" onkeydown="if(event.key==='Enter')this.click()">
-                <div class="feat-cat-icon" style="background:rgba(184,90,94,0.09)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#b85a5e" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <div class="feat-cat-icon" style="background:rgba(212,163,115,0.25)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f3226" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
                 <div>
                     <div class="feat-cat-name">Women's Tall</div>
@@ -906,8 +941,8 @@ function renderFeatured() {
                 </div>
             </div>
             <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men');toggleFilter('tallSpecific')" onkeydown="if(event.key==='Enter')this.click()">
-                <div class="feat-cat-icon" style="background:rgba(63,108,81,0.09)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f6c51" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <div class="feat-cat-icon" style="background:rgba(233,237,201,0.5)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f3226" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
                 <div>
                     <div class="feat-cat-name">Tall-Specific</div>
@@ -915,8 +950,8 @@ function renderFeatured() {
                 </div>
             </div>
             <div class="feat-cat-tile" role="button" tabindex="0" onclick="switchTab('men');setInseam(38)" onkeydown="if(event.key==='Enter')this.click()">
-                <div class="feat-cat-icon" style="background:rgba(74,138,150,0.09)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a96" stroke-width="1.8"><path d="M21 6H3"/><path d="M21 12H3"/><path d="M21 18H3"/></svg>
+                <div class="feat-cat-icon" style="background:rgba(250,237,205,0.5)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3f3226" stroke-width="1.8"><path d="M21 6H3"/><path d="M21 12H3"/><path d="M21 18H3"/></svg>
                 </div>
                 <div>
                     <div class="feat-cat-name">38" Inseam +</div>
@@ -1085,57 +1120,84 @@ function render() {
     const isMen = tab==='men';
 
     const _skip = v => !v || /^(N\/A|Not listed|Not specified|Varies|Shorts only)/i.test(v);
+    const arrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>';
 
-    document.getElementById('storeGrid').innerHTML = list.map(s => {
-        const ini = s.name[0].toUpperCase();
+    // Split into tall-specific and mainstream for section breaks
+    const tallOnly = list.filter(s => s.tallSpecific);
+    const mainstream = list.filter(s => !s.tallSpecific);
+
+    let html = '';
+
+    if (tallOnly.length && mainstream.length) {
+        html += `<div class="section-break"><h2 class="section-title">Tall-Only Brands</h2><div class="section-line"></div></div>`;
+    }
+
+    const renderCard = (s, idx) => {
         const esc = s.name.replace(/'/g, "\\'");
         const hasUrl = !!s.url;
 
-        // Headline: the single strongest sizing fact
-        let headline = '';
-        if (isMen) {
-            if (!_skip(s.inseamD)) {
-                headline = /^\d/.test(s.inseamD) ? `${s.inseamD} inseam` : s.inseamD;
+        // Category label
+        const catLabel = s.tallSpecific ? 'Tall-only' : 'Mainstream';
+        const genderLabel = isMen ? "Men's" : "Women's";
+
+        // Description: use notes, or generate from sizing data
+        let desc = s.notes || '';
+        if (!desc) {
+            const parts = [];
+            if (isMen) {
+                if (!_skip(s.topSizes)) parts.push(`Tops: ${s.topSizes}`);
+                if (!_skip(s.inseamD)) parts.push(`Inseam up to ${s.inseamD}`);
+                if (s.waist) parts.push(`Waist ${s.waist}`);
+            } else {
+                if (!_skip(s.topSizes)) parts.push(`Tops: ${s.topSizes}`);
+                if (!_skip(s.bottomSizes)) parts.push(`Bottoms: ${s.bottomSizes}`);
             }
-            if (s.tallSpecific) headline = headline ? `Tall-specific · ${headline}` : 'Tall-specific';
-        } else {
-            if (!_skip(s.bottomSizes)) headline = s.bottomSizes.split(',')[0].trim();
-            if (s.tallSpecific) headline = headline ? `Tall-specific · ${headline}` : 'Tall-specific';
+            desc = parts.join('. ');
+            if (desc) desc += '.';
         }
 
-        // Secondary sizing detail
-        let sizing = '';
-        if (isMen) {
-            const p = [];
-            if (!_skip(s.topSizes)) p.push(s.topSizes);
-            if (s.waist) p.push(`Waist ${s.waist}`);
-            sizing = p.join(' · ');
-        } else {
-            const p = [];
-            if (!_skip(s.topSizes)) p.push(s.topSizes);
-            if (!_skip(s.bottomSizes)) p.push(s.bottomSizes);
-            sizing = p.join(' · ');
+        // Stats for bottom row
+        const stats = [];
+        stats.push(catLabel);
+        if (s.hasTops && s.hasBottoms) stats.push('Tops & Bottoms');
+        else if (s.hasTops) stats.push('Tops');
+        else if (s.hasBottoms) stats.push('Bottoms');
+        if (isMen && !_skip(s.inseamD)) {
+            stats.push(/^\d/.test(s.inseamD) ? `${s.inseamD} inseam` : s.inseamD);
         }
+
+        // Featured color — give tall-specific stores a colored card
+        const featColors = ['featured-sage', 'featured-sand', 'featured-clay'];
+        const featClass = s.tallSpecific && idx < 3 ? ` ${featColors[idx % 3]}` : '';
 
         const isFaved = favs.includes(s.name);
 
         return `
         <div class="card-wrap">
-            ${hasUrl ? `<a class="card" href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.name} — visit store">` : '<div class="card">'}
-                <div class="card-mono">
-                    <span class="card-initial" aria-hidden="true">${ini}</span>
+            ${hasUrl ? `<a class="link-card${featClass}" href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.name} — visit store">` : `<div class="link-card${featClass}">`}
+                <div>
+                    <div class="link-category">${genderLabel} · ${catLabel}</div>
+                    <div class="link-title">${s.name}</div>
+                    ${desc ? `<div class="link-description">${desc}</div>` : ''}
                 </div>
-                <div class="card-info">
-                    <h3 class="card-name">${s.name}</h3>
-                    ${headline ? `<p class="card-headline">${headline}</p>` : ''}
-                    ${sizing ? `<p class="card-sizing">${sizing}</p>` : ''}
-                    ${s.notes ? `<p class="card-notes">${s.notes}</p>` : ''}
-                    ${hasUrl ? '<span class="card-cta">Visit store <span class="arrow" aria-hidden="true">↗</span></span>' : ''}
+                ${hasUrl ? `<div class="link-action"><span>Visit Store</span>${arrowSvg}</div>` : ''}
+                <div class="stats-row">
+                    ${stats.map(st => `<span class="stat">${st}</span>`).join('')}
                 </div>
             ${hasUrl ? '</a>' : '</div>'}
             <button class="fav-btn${isFaved ? ' active' : ''}" onclick="toggleFav('${esc}',event)" aria-label="${isFaved ? 'Remove from favorites' : 'Save to favorites'}">${isFaved ? '♥' : '♡'}</button>
         </div>`;
-    }).join('');
+    };
+
+    tallOnly.forEach((s, i) => { html += renderCard(s, i); });
+
+    if (tallOnly.length && mainstream.length) {
+        html += `<div class="section-break"><h2 class="section-title">Mainstream With Tall Sizing</h2><div class="section-line"></div></div>`;
+    }
+
+    mainstream.forEach((s, i) => { html += renderCard(s, i); });
+
+    document.getElementById('storeGrid').innerHTML = html;
 }
 
 // ── INIT ────────────────────────────────────────────────────────────────────
@@ -1145,10 +1207,10 @@ const _metaText = `The tall clothing directory. Browse ${_total} vetted online s
 document.getElementById('metaDesc').setAttribute('content', _metaText);
 document.getElementById('ogDesc').setAttribute('content', _metaText);
 
-// Event delegation: card notes expand
+// Event delegation: card description expand
 document.getElementById('storeGrid').addEventListener('click', e => {
-    const notes = e.target.closest('.card-notes');
-    if (notes) { e.preventDefault(); notes.classList.toggle('expanded'); }
+    const desc = e.target.closest('.link-description');
+    if (desc) { e.preventDefault(); desc.classList.toggle('expanded'); }
 });
 
 switchTab('featured');
