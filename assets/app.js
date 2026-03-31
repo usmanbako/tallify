@@ -26,6 +26,11 @@ function sortStores() {
 let tab = 'home';
 let minInseam = 0;
 const AF = { favorites: false, tallSpecific: false, hasTops: false, hasBottoms: false };
+let _historyReady = false;
+
+function normalizeTab(v) {
+    return v === 'men' || v === 'women' || v === 'home' ? v : 'home';
+}
 
 // ── FAVORITES ────────────────────────────────────────────────────────────────
 function getFavs() {
@@ -114,28 +119,31 @@ function matchesSearch(s, q, isMen) {
 // ── SWITCH TAB ───────────────────────────────────────────────────────────────
 function switchTab(t, opts) {
     opts = opts || {};
-    tab = t;
+    tab = normalizeTab(t);
     ['home', 'men', 'women'].forEach(id => {
         const el = document.getElementById('tab-' + id);
-        el.classList.toggle('on', t === id);
-        el.setAttribute('aria-selected', t === id);
+        el.classList.toggle('on', tab === id);
+        el.setAttribute('aria-selected', tab === id);
     });
 
-    if (t === 'home') {
+    if (tab === 'home') {
         document.getElementById('homepageSection').style.display = '';
         document.getElementById('mainContent').style.display = 'none';
         renderHomepage();
+        if (_historyReady && !opts.skipHistory) {
+            history.pushState({ tab: 'home' }, '', '#home');
+        }
         if (!opts.preserveSearch) window.scrollTo(0, 0);
         return;
     }
 
     document.getElementById('homepageSection').style.display = 'none';
     document.getElementById('mainContent').style.display = '';
-    document.getElementById('inseamRow').style.display = t === 'men' ? '' : 'none';
+    document.getElementById('inseamRow').style.display = tab === 'men' ? '' : 'none';
 
     // Update directory hero
-    document.getElementById('dirTitle').textContent = t === 'men' ? "Men's Tall" : "Women's Tall";
-    document.getElementById('dirMeta').textContent = t === 'men'
+    document.getElementById('dirTitle').textContent = tab === 'men' ? "Men's Tall" : "Women's Tall";
+    document.getElementById('dirMeta').textContent = tab === 'men'
         ? menStores.length + ' hand-checked stores with genuine tall sizing for men 6\'2" and above. Filter by inseam, store type, and more.'
         : womenStores.length + ' hand-checked stores with tall sizing for women 5\'9" and above. Filter by store type, sizing, and more.';
 
@@ -154,6 +162,9 @@ function switchTab(t, opts) {
         updateClear();
     }
 
+    if (_historyReady && !opts.skipHistory) {
+        history.pushState({ tab: tab }, '', '#' + tab);
+    }
     render();
     if (!opts.preserveSearch) window.scrollTo(0, 0);
 }
@@ -481,7 +492,14 @@ async function initApp() {
         const _metaText = 'A hand-reviewed directory of ' + _total + ' tall-friendly clothing stores for men and women. Every store verified, every size range confirmed.';
         document.getElementById('metaDesc').setAttribute('content', _metaText);
         document.getElementById('ogDesc').setAttribute('content', _metaText);
-        switchTab('home');
+        const initialTab = normalizeTab((location.hash || '').replace('#', ''));
+        switchTab(initialTab, { skipHistory: true });
+        history.replaceState({ tab: initialTab }, '', '#' + initialTab);
+        _historyReady = true;
+        window.addEventListener('popstate', e => {
+            const nextTab = normalizeTab(e.state && e.state.tab);
+            switchTab(nextTab, { skipHistory: true, preserveSearch: true });
+        });
     } catch (error) {
         document.getElementById('homepageContent').innerHTML = '<div class="wrap" style="padding-top:24px;padding-bottom:24px;"><p>We could not load the directory data.</p><p style="margin-top:8px;">If you opened this file directly, run it from a local server (for example: <code>python -m http.server 5500</code>) and reload.</p></div>';
     }
