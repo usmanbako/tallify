@@ -17,7 +17,7 @@ async function loadData() {
 
 // Pre-sort (A-Z, once)
 const _cmp = (a, b) => a.name.localeCompare(b.name);
-function sortStores() {
+function sortStoreArrays() {
     menStores.sort(_cmp);
     womenStores.sort(_cmp);
 }
@@ -25,8 +25,101 @@ function sortStores() {
 // ── STATE ────────────────────────────────────────────────────────────────────
 let tab = 'home';
 let minInseam = 0;
+let listSort = 'tall';
 const AF = { favorites: false, tallSpecific: false, hasTops: false, hasBottoms: false };
 let _historyReady = false;
+let _skipUrlSync = false;
+
+function trackEvent(name, params) {
+    try {
+        if (localStorage.getItem('tallfind_analytics_consent') !== 'accepted') return;
+        if (typeof gtag !== 'function') return;
+        gtag('event', name, params || {});
+    } catch (e) { /* ignore */ }
+}
+
+function readURLState() {
+    const p = new URLSearchParams(location.search);
+    const tabRaw = p.get('tab') || (location.hash || '').replace('#', '') || 'home';
+    const sortRaw = p.get('sort');
+    const sort = ['tall', 'az', 'inseam'].includes(sortRaw) ? sortRaw : 'tall';
+    const ins = Math.max(0, parseInt(p.get('ins') || '0', 10) || 0);
+    const ft = (p.get('ft') || '').split(',').map(s => s.trim()).filter(k => AF.hasOwnProperty(k));
+    return {
+        tab: normalizeTab(tabRaw),
+        q: p.get('q') || '',
+        sort,
+        ins: [0, 34, 36, 38, 40, 42].includes(ins) ? ins : 0,
+        ft
+    };
+}
+
+function buildQueryString() {
+    if (tab === 'home') return '';
+    const p = new URLSearchParams();
+    p.set('tab', tab);
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) p.set('q', q);
+    p.set('sort', listSort);
+    if (tab === 'men') p.set('ins', String(minInseam));
+    const ftParts = [];
+    if (AF.tallSpecific) ftParts.push('tallSpecific');
+    if (AF.hasTops) ftParts.push('hasTops');
+    if (AF.hasBottoms) ftParts.push('hasBottoms');
+    if (AF.favorites) ftParts.push('favorites');
+    if (ftParts.length) p.set('ft', ftParts.join(','));
+    return '?' + p.toString();
+}
+
+function replaceFilterURL() {
+    if (!_historyReady || _skipUrlSync || tab === 'home') return;
+    const qs = buildQueryString();
+    history.replaceState({ tab }, '', location.pathname + qs);
+}
+
+function pushTabURL() {
+    if (!_historyReady || _skipUrlSync) return;
+    if (tab === 'home') {
+        history.pushState({ tab: 'home' }, '', location.pathname);
+        return;
+    }
+    history.pushState({ tab }, '', location.pathname + buildQueryString());
+}
+
+function applyURLStateToUI(st) {
+    document.getElementById('searchInput').value = st.q;
+    listSort = st.sort;
+    minInseam = st.ins;
+    ['favorites', 'tallSpecific', 'hasTops', 'hasBottoms'].forEach(k => {
+        AF[k] = st.ft.includes(k);
+        const el = document.getElementById('f-' + k);
+        if (el) el.classList.toggle('on', AF[k]);
+    });
+    const any = Object.values(AF).some(Boolean);
+    const fAll = document.getElementById('f-all');
+    if (fAll) fAll.classList.toggle('on', !any);
+    document.querySelectorAll('[data-ins]').forEach(b =>
+        b.classList.toggle('on', +b.dataset.ins === st.ins));
+    const sel = document.getElementById('sortSelect');
+    if (sel) {
+        syncSortSelectOptions();
+        sel.value = listSort;
+    }
+    updateClear();
+}
+
+function syncSortSelectOptions() {
+    const sel = document.getElementById('sortSelect');
+    if (!sel) return;
+    const optInseam = sel.querySelector('option[value="inseam"]');
+    if (optInseam) {
+        optInseam.disabled = tab === 'women';
+        if (tab === 'women' && listSort === 'inseam') {
+            listSort = 'tall';
+            sel.value = 'tall';
+        }
+    }
+}
 
 function normalizeTab(v) {
     return v === 'men' || v === 'women' || v === 'home' ? v : 'home';
@@ -130,8 +223,9 @@ function switchTab(t, opts) {
         document.getElementById('homepageSection').style.display = '';
         document.getElementById('mainContent').style.display = 'none';
         renderHomepage();
+        syncSortSelectOptions();
         if (_historyReady && !opts.skipHistory) {
-            history.pushState({ tab: 'home' }, '', '#home');
+            pushTabURL();
         }
         if (!opts.preserveSearch) window.scrollTo(0, 0);
         return;
@@ -140,6 +234,7 @@ function switchTab(t, opts) {
     document.getElementById('homepageSection').style.display = 'none';
     document.getElementById('mainContent').style.display = '';
     document.getElementById('inseamRow').style.display = tab === 'men' ? '' : 'none';
+    syncSortSelectOptions();
 
     // Update directory hero
     document.getElementById('dirTitle').textContent = tab === 'men' ? "Men's Tall" : "Women's Tall";
@@ -163,9 +258,10 @@ function switchTab(t, opts) {
     }
 
     if (_historyReady && !opts.skipHistory) {
-        history.pushState({ tab: tab }, '', '#' + tab);
+        pushTabURL();
     }
     render();
+    replaceFilterURL();
     if (!opts.preserveSearch) window.scrollTo(0, 0);
 }
 
@@ -349,7 +445,9 @@ function toggleFilter(key) {
     const any = Object.values(AF).some(Boolean);
     document.getElementById('f-all').classList.toggle('on', !any);
     updateClear();
+    trackEvent('filter_used', { filter_key: key, tab });
     render();
+    replaceFilterURL();
 }
 
 function setInseam(v) {
@@ -357,7 +455,9 @@ function setInseam(v) {
     document.querySelectorAll('[data-ins]').forEach(b =>
         b.classList.toggle('on', +b.dataset.ins === v));
     updateClear();
+    trackEvent('filter_used', { filter_key: 'inseam', min_inseam: v, tab });
     render();
+    replaceFilterURL();
 }
 
 function clearFilters(silent, keepSearch) {
@@ -370,7 +470,10 @@ function clearFilters(silent, keepSearch) {
     document.querySelectorAll('[data-ins]').forEach(b => b.classList.toggle('on', b.dataset.ins === '0'));
     if (!keepSearch) document.getElementById('searchInput').value = '';
     document.getElementById('clearBtn').style.display = 'none';
-    if (!silent) render();
+    if (!silent) {
+        render();
+        replaceFilterURL();
+    }
 }
 
 function updateClear() {
@@ -388,8 +491,31 @@ document.getElementById('searchInput').addEventListener('input', () => {
         return;
     }
     clearTimeout(_searchTimer);
-    _searchTimer = setTimeout(render, 150);
+    _searchTimer = setTimeout(function () {
+        if (tab === 'men' || tab === 'women') {
+            const ql = document.getElementById('searchInput').value.trim().length;
+            if (ql) trackEvent('search', { query_length: ql, tab });
+        }
+        render();
+        replaceFilterURL();
+    }, 150);
 });
+
+function nameSort(arr) {
+    return arr.slice().sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function sortFlatInseamMen(list) {
+    const out = list.slice();
+    out.sort((a, b) => {
+        const ai = a.inseam == null ? -1 : a.inseam;
+        const bi = b.inseam == null ? -1 : b.inseam;
+        const d = bi - ai;
+        if (d !== 0) return d;
+        return a.name.localeCompare(b.name);
+    });
+    return out;
+}
 
 // ── RENDER ───────────────────────────────────────────────────────────────────
 function render() {
@@ -416,23 +542,28 @@ function render() {
     const tallOnly = list.filter(s => s.tallSpecific);
     const mainstream = list.filter(s => !s.tallSpecific);
 
-    let html = '';
-
-    if (tallOnly.length && mainstream.length) {
-        html += '<div class="section-break"><h2 class="section-title">Tall-Only Brands</h2><div class="section-line"></div></div>';
+    let useFlat = listSort === 'az' || (listSort === 'inseam' && !isMen);
+    let flatList = null;
+    if (listSort === 'inseam' && isMen) {
+        flatList = sortFlatInseamMen(list);
+        useFlat = true;
+    } else if (listSort === 'az' || (listSort === 'inseam' && !isMen)) {
+        flatList = nameSort(list);
+        useFlat = true;
     }
+
+    let html = '';
 
     const renderCard = (s, idx) => {
         const esc = s.name.replace(/'/g, "\\'");
         const hasUrl = !!s.url;
         const safeHref = safeUrl(s.url);
+        const dataStore = encodeURIComponent(s.name);
         const catLabel = s.tallSpecific ? 'Tall-Only' : 'Tall Section';
         const genderLabel = isMen ? "Men's" : "Women's";
 
-        // Editorial description
         const desc = generateDesc(s, isMen);
 
-        // Stats
         const stats = [];
         if (s.tallSpecific) stats.push({ text: '\u2605 Tall-Only', highlight: true });
         else stats.push({ text: 'Tall Section', highlight: false });
@@ -449,7 +580,6 @@ function render() {
             stats.push({ text: s.bottomSizes, highlight: false });
         }
 
-        // Featured color for first 3 tall-specific
         const featColors = ['featured-sage', 'featured-sand', 'featured-clay'];
         const featClass = s.tallSpecific && idx < 3 ? ' ' + featColors[idx % 3] : '';
         const isFaved = favs.includes(s.name);
@@ -459,7 +589,7 @@ function render() {
         const safeGenderLabel = escapeHtml(genderLabel);
 
         return '<div class="card-wrap">'
-            + (hasUrl && safeHref ? '<a class="link-card' + featClass + '" href="' + safeHref + '" target="_blank" rel="noopener noreferrer" aria-label="' + safeName + '">' : '<div class="link-card' + featClass + '">')
+            + (hasUrl && safeHref ? '<a class="link-card' + featClass + '" href="' + safeHref + '" data-store="' + dataStore + '" target="_blank" rel="noopener noreferrer" aria-label="' + safeName + '">' : '<div class="link-card' + featClass + '">')
             + '<div>'
             + '<div class="link-category">' + safeGenderLabel + ' \u00b7 ' + safeCatLabel + '</div>'
             + '<div class="link-title">' + safeName + '</div>'
@@ -472,13 +602,20 @@ function render() {
             + '</div>';
     };
 
-    tallOnly.forEach((s, i) => { html += renderCard(s, i); });
-
-    if (tallOnly.length && mainstream.length) {
-        html += '<div class="section-break"><h2 class="section-title">Mainstream With Tall Sizing</h2><div class="section-line"></div></div>';
+    if (useFlat && flatList) {
+        flatList.forEach((s, i) => { html += renderCard(s, i); });
+    } else {
+        const t = nameSort(tallOnly);
+        const m = nameSort(mainstream);
+        if (t.length && m.length) {
+            html += '<div class="section-break"><h2 class="section-title">Tall-Only Brands</h2><div class="section-line"></div></div>';
+        }
+        t.forEach((s, i) => { html += renderCard(s, i); });
+        if (t.length && m.length) {
+            html += '<div class="section-break"><h2 class="section-title">Mainstream With Tall Sizing</h2><div class="section-line"></div></div>';
+        }
+        m.forEach((s, i) => { html += renderCard(s, i); });
     }
-
-    mainstream.forEach((s, i) => { html += renderCard(s, i); });
 
     document.getElementById('storeGrid').innerHTML = html;
 }
@@ -487,19 +624,47 @@ function render() {
 async function initApp() {
     try {
         await loadData();
-        sortStores();
+        sortStoreArrays();
         const _total = menStores.length + womenStores.length;
         const _metaText = 'A hand-reviewed directory of ' + _total + ' tall-friendly clothing stores for men and women. Every store verified, every size range confirmed.';
         document.getElementById('metaDesc').setAttribute('content', _metaText);
         document.getElementById('ogDesc').setAttribute('content', _metaText);
-        const initialTab = normalizeTab((location.hash || '').replace('#', ''));
-        switchTab(initialTab, { skipHistory: true });
-        history.replaceState({ tab: initialTab }, '', '#' + initialTab);
+        const st = readURLState();
+        _skipUrlSync = true;
+        switchTab(st.tab, { skipHistory: true, preserveSearch: true });
+        applyURLStateToUI(st);
+        if (st.tab !== 'home') render();
+        _skipUrlSync = false;
+        const path = st.tab === 'home' ? location.pathname : location.pathname + buildQueryString();
+        history.replaceState({ tab: st.tab }, '', path);
         _historyReady = true;
-        window.addEventListener('popstate', e => {
-            const nextTab = normalizeTab(e.state && e.state.tab);
-            switchTab(nextTab, { skipHistory: true, preserveSearch: true });
+        window.addEventListener('popstate', function () {
+            _skipUrlSync = true;
+            const next = readURLState();
+            switchTab(next.tab, { skipHistory: true, preserveSearch: true });
+            applyURLStateToUI(next);
+            if (next.tab !== 'home') render();
+            _skipUrlSync = false;
         });
+        const sortSel = document.getElementById('sortSelect');
+        if (sortSel) {
+            sortSel.addEventListener('change', function () {
+                listSort = this.value;
+                trackEvent('sort_changed', { sort: listSort, tab });
+                render();
+                replaceFilterURL();
+            });
+        }
+        const grid = document.getElementById('storeGrid');
+        if (grid) {
+            grid.addEventListener('click', function (e) {
+                const a = e.target.closest('a.link-card[data-store]');
+                if (!a) return;
+                const raw = a.getAttribute('data-store');
+                const name = raw ? decodeURIComponent(raw) : '';
+                trackEvent('visit_store', { store_name: name, tab });
+            });
+        }
     } catch (error) {
         document.getElementById('homepageContent').innerHTML = '<div class="wrap" style="padding-top:24px;padding-bottom:24px;"><p>We could not load the directory data.</p><p style="margin-top:8px;">If you opened this file directly, run it from a local server (for example: <code>python -m http.server 5500</code>) and reload.</p></div>';
     }

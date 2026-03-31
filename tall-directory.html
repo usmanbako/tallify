@@ -73,6 +73,12 @@
                 <button class="pill pill-sm"     id="f-favorites"     onclick="toggleFilter('favorites')">&#x2665; Saved</button>
             </div>
             <div class="toolbar-right">
+                <label class="sr-only" for="sortSelect">Sort stores</label>
+                <select id="sortSelect" class="form-select sort-select" aria-label="Sort stores">
+                    <option value="tall">Tall-only first</option>
+                    <option value="az">A–Z (flat)</option>
+                    <option value="inseam">Longest inseam</option>
+                </select>
                 <span class="store-count" id="storeCount"></span>
                 <button class="clear-btn" id="clearBtn" style="display:none" onclick="clearFilters()">Clear all</button>
             </div>
