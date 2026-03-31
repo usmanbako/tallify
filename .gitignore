@@ -3,6 +3,7 @@ PetApplication.zip
 app.js
 style.css
 react-app.html
+!assets/app.js
 
 # Claude Code config
 .claude/

@@ -1,0 +1,60 @@
+[
+  {
+    "section": "Men's & Women's Pick",
+    "name": "American Tall",
+    "domain": "americantall.com",
+    "heroImage": "https://americantall.com/cdn/shop/files/ponte_hp_banner_desktop.jpg?v=1770914294&width=1600",
+    "url": "https://www.americantall.com",
+    "blurb": "One of the broadest dedicated tall ranges available. Semi-Tall, Tall, and Xtra Tall tiers for both men and women. Men get 40\" inseams and waists from 28\" to 40\"; women get proportional fits from 5'9\" to 6'6\". The go-to starting point.",
+    "tags": [
+      "Tall-specific",
+      "Men & Women",
+      "40\" inseam",
+      "S–3XL"
+    ],
+    "tallSpecific": true
+  },
+  {
+    "section": "Men's Pick",
+    "name": "HaveItTall",
+    "domain": "haveittall.com",
+    "url": "https://www.haveittall.com",
+    "blurb": "The go-to for serious inseam length. 42\" options with waist sizes from 32\" to 40\". This tall-specific store consistently delivers for guys who've given up finding long enough pants anywhere else.",
+    "tags": [
+      "Tall-specific",
+      "Tops S–3XL",
+      "42\" inseam",
+      "Waist 32\"–40\""
+    ],
+    "tallSpecific": true
+  },
+  {
+    "section": "Women's Pick",
+    "name": "Long Tall Sally",
+    "domain": "longtallsally.com",
+    "heroImage": null,
+    "url": "https://www.longtallsally.com",
+    "blurb": "The original dedicated tall women's retailer. Decades of experience shows: pants up to size 28, tops to size 20, and a selection that genuinely understands the tall body rather than just hemming standard cuts.",
+    "tags": [
+      "Tall-specific",
+      "Tops 4–20",
+      "Bottoms 4–28"
+    ],
+    "tallSpecific": true
+  },
+  {
+    "section": "Women's Pick",
+    "name": "Old Navy",
+    "domain": "oldnavy.com",
+    "heroImage": null,
+    "url": "https://www.oldnavy.com/browse/category.do?cid=55876",
+    "blurb": "The most accessible option for tall women on a budget. Tall sizes run XS to XXL in tops and 00 to 20 in bottoms, with tall options extending to dresses, outerwear, and swimwear. Rare to find that much range in one place.",
+    "tags": [
+      "XS–XXL tops",
+      "00–20 bottoms",
+      "Dresses",
+      "Swimwear"
+    ],
+    "tallSpecific": false
+  }
+]
