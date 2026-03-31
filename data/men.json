@@ -456,7 +456,7 @@
   },
   {
     "name": "MediumTall",
-    "domain": "mediumtall.com",
+    "domain": "mediumtallclothing.com",
     "tallSpecific": true,
     "hasTops": true,
     "hasBottoms": false,
@@ -465,7 +465,7 @@
     "inseamD": "Varies",
     "waist": null,
     "notes": "European-based; US availability may be limited",
-    "url": "https://www.mediumtall.com"
+    "url": "https://mediumtallclothing.com/"
   },
   {
     "name": "Navas",
