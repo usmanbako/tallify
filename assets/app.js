@@ -289,7 +289,7 @@ function renderHomepage() {
     // ── HERO ──
     '<section class="hp-hero-section">'
     + '<div class="hp-hero">'
-    +   '<img class="hp-hero-img" src="https://images.pexels.com/photos/11054593/pexels-photo-11054593.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Tall fashion">'
+    +   '<img class="hp-hero-img" src="assets/hero.jpg" alt="Three tall figures in curated fits \u2014 denim and tee, black vest and trousers, cream sweater and chocolate pants" loading="eager" fetchpriority="high">'
     +   '<div class="hp-hero-overlay"></div>'
     +   '<div class="hp-hero-content">'
     +     '<div class="hp-pill">Curated Tall Clothing Directory</div>'
