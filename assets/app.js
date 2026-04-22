@@ -289,7 +289,7 @@ function renderHomepage() {
     // ── HERO ──
     '<section class="hp-hero-section">'
     + '<div class="hp-hero">'
-    +   '<img class="hp-hero-img" src="assets/hero.jpg" alt="Three tall figures in curated fits \u2014 denim and tee, black vest and trousers, cream sweater and chocolate pants" loading="eager" fetchpriority="high">'
+    +   '<img class="hp-hero-img" src="assets/hero.png" alt="Three tall figures in curated fits \u2014 denim and tee, black vest and trousers, cream sweater and chocolate pants" loading="eager" fetchpriority="high">'
     +   '<div class="hp-hero-overlay"></div>'
     +   '<div class="hp-hero-content">'
     +     '<div class="hp-pill">Curated Tall Clothing Directory</div>'
