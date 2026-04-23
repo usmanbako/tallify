@@ -350,6 +350,15 @@ function renderHomepage() {
     +         '</ul>'
     +       '</div>'
     +       '<div class="hp-footer-col">'
+    +         '<h5>Trust</h5>'
+    +         '<ul>'
+    +           '<li><a href="/about/" style="color:inherit;text-decoration:none">About</a></li>'
+    +           '<li><a href="/how-we-review/" style="color:inherit;text-decoration:none">How We Review</a></li>'
+    +           '<li><a href="/privacy/" style="color:inherit;text-decoration:none">Privacy</a></li>'
+    +           '<li><a href="/terms/" style="color:inherit;text-decoration:none">Terms</a></li>'
+    +         '</ul>'
+    +       '</div>'
+    +       '<div class="hp-footer-col">'
     +         '<h5>Resources</h5>'
     +         '<ul>'
     +           '<li onclick="openModal()">Submit a Store</li>'
@@ -358,7 +367,7 @@ function renderHomepage() {
     +       '</div>'
     +     '</div>'
     +     '<div class="hp-footer-bottom">'
-    +       '<span>\u00a9 2026 Tallfind</span>'
+    +       '<span>\u00a9 ' + _now.getFullYear() + ' Tallfind \u00b7 Some outbound links may be affiliate links. <a href="/how-we-review/#disclosure" style="color:rgba(255,253,246,0.6);text-decoration:underline">How this works</a>.</span>'
     +       '<span>Data sourced from community research by <a href="https://www.reddit.com/u/wildthingking" target="_blank" rel="noopener" style="color:rgba(255,253,246,0.5);text-decoration:underline">u/wildthingking</a></span>'
     +     '</div>'
     +   '</div>'
@@ -656,6 +665,9 @@ async function initApp() {
         const path = st.tab === 'home' ? location.pathname : location.pathname + buildQueryString();
         history.replaceState({ tab: st.tab }, '', path);
         _historyReady = true;
+        var modalParam = new URLSearchParams(location.search).get('modal');
+        if (modalParam === 'submit') { openModal(); }
+        else if (modalParam === 'feedback') { openFeedback(); }
         window.addEventListener('popstate', function () {
             _skipUrlSync = true;
             const next = readURLState();
