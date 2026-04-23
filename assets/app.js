@@ -281,7 +281,7 @@ function renderHomepage() {
         if (!seen[s.name]) { marqueeNames.push(s.name); seen[s.name] = true; }
     });
     marqueeNames = marqueeNames.slice(0, 16);
-    var marqueeHTML = marqueeNames.map(function(n) { return '<span class="hp-brand">' + n + '</span>'; }).join('');
+    var marqueeHTML = marqueeNames.map(function(n) { return '<span class="hp-brand">' + escapeHtml(n) + '</span>'; }).join('');
 
     var _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     var _now = new Date();
@@ -576,7 +576,6 @@ function render() {
 
     const af = (window.Tallfind && window.Tallfind.affiliates) || null;
     const renderCard = (s, idx) => {
-        const esc = s.name.replace(/'/g, "\\'");
         const hasUrl = !!s.url;
         const finalUrl = af ? af.affiliateUrl(s) : s.url;
         const safeHref = safeUrl(finalUrl);
@@ -622,7 +621,7 @@ function render() {
             + (hasUrl && safeHref ? '<div class="link-action"><span>Visit Store</span>' + arrowSvg + '</div>' : '')
             + '<div class="stats-row">' + stats.map(st => '<span class="stat' + (st.highlight ? ' stat-highlight' : '') + '">' + escapeHtml(st.text) + '</span>').join('') + '</div>'
             + (hasUrl && safeHref ? '</a>' : '</div>')
-            + '<button class="fav-btn' + (isFaved ? ' active' : '') + '" onclick="toggleFav(\'' + esc + '\',event)" aria-label="' + (isFaved ? 'Remove from favorites' : 'Save to favorites') + '">' + (isFaved ? '\u2665' : '\u2661') + '</button>'
+            + '<button class="fav-btn' + (isFaved ? ' active' : '') + '" data-fav-name="' + safeName + '" aria-label="' + (isFaved ? 'Remove from favorites' : 'Save to favorites') + '">' + (isFaved ? '\u2665' : '\u2661') + '</button>'
             + '</div>';
     };
 
@@ -686,6 +685,13 @@ async function initApp() {
             });
         }
         document.addEventListener('click', function (e) {
+            var favBtn = e.target.closest ? e.target.closest('.fav-btn[data-fav-name]') : null;
+            if (favBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFav(favBtn.dataset.favName, e);
+                return;
+            }
             const a = e.target.closest('a[href]');
             if (!a) return;
             let host;
