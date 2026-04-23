@@ -30,11 +30,13 @@ const AF = { favorites: false, tallSpecific: false, hasTops: false, hasBottoms: 
 let _historyReady = false;
 let _skipUrlSync = false;
 
-function trackEvent(name, params) {
+function trackEvent(name, params, opts) {
     try {
         if (localStorage.getItem('tallfind_analytics_consent') !== 'accepted') return;
         if (typeof gtag !== 'function') return;
-        gtag('event', name, params || {});
+        var p = Object.assign({}, params || {});
+        if (opts && opts.beacon) p.transport_type = 'beacon';
+        gtag('event', name, p);
     } catch (e) { /* ignore */ }
 }
 
@@ -563,11 +565,15 @@ function render() {
 
     let html = '';
 
+    const af = (window.Tallfind && window.Tallfind.affiliates) || null;
     const renderCard = (s, idx) => {
         const esc = s.name.replace(/'/g, "\\'");
         const hasUrl = !!s.url;
-        const safeHref = safeUrl(s.url);
+        const finalUrl = af ? af.affiliateUrl(s) : s.url;
+        const safeHref = safeUrl(finalUrl);
         const dataStore = encodeURIComponent(s.name);
+        const storeSlug = af ? af.slugFor(s) : '';
+        const network = af ? af.networkFor(s) : 'none';
         const catLabel = s.tallSpecific ? 'Tall-Only' : 'Tall Section';
         const genderLabel = isMen ? "Men's" : "Women's";
 
@@ -598,7 +604,7 @@ function render() {
         const safeGenderLabel = escapeHtml(genderLabel);
 
         return '<div class="card-wrap">'
-            + (hasUrl && safeHref ? '<a class="link-card' + featClass + '" href="' + safeHref + '" data-store="' + dataStore + '" target="_blank" rel="noopener noreferrer" aria-label="' + safeName + '">' : '<div class="link-card' + featClass + '">')
+            + (hasUrl && safeHref ? '<a class="link-card' + featClass + '" href="' + safeHref + '" data-store="' + dataStore + '" data-store-slug="' + escapeHtml(storeSlug || '') + '" data-store-name="' + safeName + '" data-affiliate-network="' + escapeHtml(network) + '" target="_blank" rel="noopener noreferrer sponsored" aria-label="' + safeName + '">' : '<div class="link-card' + featClass + '">')
             + '<div>'
             + '<div class="link-category">' + safeGenderLabel + ' \u00b7 ' + safeCatLabel + '</div>'
             + '<div class="link-title">' + safeName + '</div>'
@@ -632,7 +638,10 @@ function render() {
 // ── INIT ─────────────────────────────────────────────────────────────────────
 async function initApp() {
     try {
-        await loadData();
+        await Promise.all([
+            loadData(),
+            (window.Tallfind && window.Tallfind.affiliates && window.Tallfind.affiliates.ready) || Promise.resolve()
+        ]);
         sortStoreArrays();
         const _total = menStores.length + womenStores.length;
         const _metaText = 'A hand-reviewed directory of ' + _total + ' tall-friendly clothing stores for men and women. Every store verified, every size range confirmed.';
@@ -664,16 +673,28 @@ async function initApp() {
                 replaceFilterURL();
             });
         }
-        const grid = document.getElementById('storeGrid');
-        if (grid) {
-            grid.addEventListener('click', function (e) {
-                const a = e.target.closest('a.link-card[data-store]');
-                if (!a) return;
-                const raw = a.getAttribute('data-store');
-                const name = raw ? decodeURIComponent(raw) : '';
-                trackEvent('visit_store', { store_name: name, tab });
-            });
-        }
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a[href]');
+            if (!a) return;
+            let host;
+            try { host = new URL(a.href, location.href).host; } catch (err) { return; }
+            if (!host || host === location.host) return;
+            const slug = a.dataset.storeSlug || null;
+            const name = a.dataset.storeName
+                || (a.dataset.store ? decodeURIComponent(a.dataset.store) : null);
+            const network = a.dataset.affiliateNetwork || 'none';
+            const source = (document.body && document.body.dataset.page) || tab || 'home';
+            trackEvent('outbound_click', {
+                store_slug: slug,
+                store_name: name,
+                source_page: source,
+                destination_domain: host,
+                affiliate_network: network
+            }, { beacon: true });
+            if (name) {
+                trackEvent('visit_store', { store_name: name, tab: source }, { beacon: true });
+            }
+        });
     } catch (error) {
         document.getElementById('homepageContent').innerHTML = '<div class="wrap" style="padding-top:24px;padding-bottom:24px;"><p>We could not load the directory data.</p><p style="margin-top:8px;"><button class="pill pill-sm" onclick="location.reload()">Try again</button></p></div>';
     }
